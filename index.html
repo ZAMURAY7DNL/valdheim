@@ -227,6 +227,16 @@ header.hero canvas#fx,header.hero .orb{z-index:1}
 footer a{color:var(--gold)}
 @media (max-width:640px){.fteaser{margin-left:6px;margin-right:6px}.hero-art{object-position:center 22%}}
 </style>
+
+<style id="fx-subs">
+.subpanel{max-width:640px;margin:0 auto 22px;padding:16px 18px;border-radius:14px;background:rgba(7,11,22,.66);border:1px solid rgba(242,201,92,.28);text-align:left}
+.subrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.subrow label{font-family:Cinzel,serif;font-size:12.5px;letter-spacing:.1em;color:var(--gold)}
+.subrow input{flex:1;min-width:220px;padding:10px 12px;border-radius:9px;border:1px solid rgba(242,201,92,.35);background:rgba(255,255,255,.06);color:var(--tx);font-size:15px}
+.subnote{margin:10px 0 4px;font-size:13.5px;color:var(--mu);line-height:1.45}
+.subok{font-size:15px;color:var(--tx);text-align:center;padding:8px 0}
+#subBox{margin-top:8px}
+</style>
 </head>
 <body>
 <div id="sp" aria-hidden="true"></div>
@@ -466,13 +476,19 @@ footer a{color:var(--gold)}
   </div>
   <div class="promise"><h3>🪙 Every donation comes back doubled</h3><p>Direct or monthly, <b>every donation counts</b> toward the funding goals and is recorded under your name. When the game officially launches, you will receive your total support back in in-game coins — <b>at double its value</b>. Your total also unlocks the <a href="#fundador">Founder Collection</a> below.</p></div>
   <div class="donate-box"><span class="eye">One-time · Any amount</span><h3>💝 Direct Donation</h3><p>A single donation of any amount, right now. No subscription, no commitment — just direct help for the realm, counted toward the goals and the launch promise like every other donation.</p><a class="btn" href="https://www.paypal.me/valdheim" target="_blank" rel="noopener" data-donate="1">Donate now</a></div>
-  <div class="phase-h"><span class="eye">Monthly · No auto-charge · Skip anytime</span><h3>Growth &amp; Management Patrons</h3><p>Monthly tiers fund the game's growth and its day-to-day management. Each month is sent by you through PayPal — nothing is ever charged automatically. Every tier includes the benefits of the ones before it.</p></div>
+  <div class="phase-h"><span class="eye">Monthly · Auto-charged by PayPal · Cancel anytime</span><h3>Growth &amp; Management Patrons</h3><p>Monthly tiers fund the game's growth and its day-to-day management. PayPal charges your subscription automatically each month — cancel anytime from your PayPal account. Every tier includes the benefits of the ones before it.</p></div>
+
+<div class="subpanel" id="suscribir">
+  <div class="subrow"><label for="subEmail">YOUR ACCOUNT EMAIL</label><input id="subEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
+  <p class="subnote" id="subMsg">Pick a tier below and PayPal will ask you to approve the monthly charge. Your subscription is tied to this email — use the same one as your Valdheim account so every payment counts toward your Founder totals.</p>
+  <div id="subBox"></div>
+</div>
   <div class="tiers">
-    <div class="tier tilt"><h3>🪓 Warrior</h3><div class="pr">$10<small> /mo</small></div><ul class="ck"><li>Your name on the Wall of Honor</li><li>Patron role in the community</li><li>Early development previews</li></ul><a class="btn o" href="https://www.paypal.me/valdheim/10" target="_blank" rel="noopener" data-tier="Warrior">Choose Warrior</a></div>
-    <div class="tier tilt"><h3>🛡️ Captain</h3><div class="pr">$20<small> /mo</small></div><ul class="ck"><li>Everything in Warrior</li><li>Exclusive profile cosmetic</li><li>Early access to new content</li><li>A vote in community polls</li></ul><a class="btn o" href="https://www.paypal.me/valdheim/20" target="_blank" rel="noopener" data-tier="Captain">Choose Captain</a></div>
-    <div class="tier tilt hot"><span class="badge">Most popular</span><h3>⚔️ Jarl</h3><div class="pr">$50<small> /mo</small></div><ul class="ck"><li>Everything in Captain</li><li>Exclusive in-game title</li><li>Welcome resource pack</li><li>Suggest and vote on new mechanics</li><li>Private channel with the developer</li></ul><a class="btn" href="https://www.paypal.me/valdheim/50" target="_blank" rel="noopener" data-tier="Jarl">Choose Jarl</a></div>
-    <div class="tier tilt"><h3>👑 King</h3><div class="pr">$100<small> /mo</small></div><ul class="ck"><li>Everything in Jarl</li><li>Your name on a building or NPC in the game</li><li>Exclusive skin for one general</li><li>A hand in designing events</li></ul><a class="btn o" href="https://www.paypal.me/valdheim/100" target="_blank" rel="noopener" data-tier="King">Choose King</a></div>
-    <div class="tier tilt"><h3>🐉 Legend</h3><div class="pr">$500<small> /mo</small></div><ul class="ck"><li>Everything in King</li><li>A character or place in the story inspired by you</li><li>Founder patron credits</li><li>Monthly talks on where the game is heading</li></ul><a class="btn o" href="https://www.paypal.me/valdheim/500" target="_blank" rel="noopener" data-tier="Legend">Choose Legend</a></div>
+    <div class="tier tilt"><h3>🪓 Warrior</h3><div class="pr">$10<small> /mo</small></div><ul class="ck"><li>Your name on the Wall of Honor</li><li>Patron role in the community</li><li>Early development previews</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="warrior" data-nombre="Warrior" data-monto="10">Subscribe</a></div>
+    <div class="tier tilt"><h3>🛡️ Captain</h3><div class="pr">$20<small> /mo</small></div><ul class="ck"><li>Everything in Warrior</li><li>Exclusive profile cosmetic</li><li>Early access to new content</li><li>A vote in community polls</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="captain" data-nombre="Captain" data-monto="20">Subscribe</a></div>
+    <div class="tier tilt hot"><span class="badge">Most popular</span><h3>⚔️ Jarl</h3><div class="pr">$50<small> /mo</small></div><ul class="ck"><li>Everything in Captain</li><li>Exclusive in-game title</li><li>Welcome resource pack</li><li>Suggest and vote on new mechanics</li><li>Private channel with the developer</li></ul><a class="btn sub-open" href="#suscribir" data-nivel="jarl" data-nombre="Jarl" data-monto="50">Subscribe</a></div>
+    <div class="tier tilt"><h3>👑 King</h3><div class="pr">$100<small> /mo</small></div><ul class="ck"><li>Everything in Jarl</li><li>Your name on a building or NPC in the game</li><li>Exclusive skin for one general</li><li>A hand in designing events</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="king" data-nombre="King" data-monto="100">Subscribe</a></div>
+    <div class="tier tilt"><h3>🐉 Legend</h3><div class="pr">$500<small> /mo</small></div><ul class="ck"><li>Everything in King</li><li>A character or place in the story inspired by you</li><li>Founder patron credits</li><li>Monthly talks on where the game is heading</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="legend" data-nombre="Legend" data-monto="500">Subscribe</a></div>
   </div>
   <p class="note">Sponsoring as a business? Write to us and we'll talk.</p>
 </div></section>
@@ -818,6 +834,50 @@ w.addEventListener('resize',debounce(function(){size();measure()},150));
 w.addEventListener('load',measure);
 if(d.fonts&&d.fonts.ready) d.fonts.ready.then(measure);
 if(w.ResizeObserver) new ResizeObserver(debounce(measure,150)).observe(d.body);
+})();
+</script>
+
+<script>
+(function(){
+  var API='https://desktop-k4oa1i8.tail5b7f9a.ts.net/api/web/planes';
+  var datos=null, sdkListo=false;
+  var emailEl=document.getElementById('subEmail'), box=document.getElementById('subBox'), msg=document.getElementById('subMsg');
+  if(!emailEl||!box||!msg) return;
+  try{ emailEl.value=localStorage.getItem('valdheim_email')||''; }catch(e){}
+  function correo(){ var v=(emailEl.value||'').trim().toLowerCase(); return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?v:null; }
+  function cargarSdk(clientId, cb){
+    if(sdkListo) return cb();
+    if(!clientId){ msg.textContent='Subscriptions are not available right now.'; return; }
+    var s=document.createElement('script');
+    s.src='https://www.paypal.com/sdk/js?client-id='+encodeURIComponent(clientId)+'&vault=true&intent=subscription&currency=USD';
+    s.onload=function(){ sdkListo=true; cb(); };
+    s.onerror=function(){ msg.textContent='PayPal could not be loaded — please try again in a moment.'; };
+    document.head.appendChild(s);
+  }
+  function pintar(plan){
+    box.innerHTML='';
+    paypal.Buttons({
+      style:{shape:'pill', color:'gold', layout:'vertical', label:'subscribe'},
+      createSubscription:function(data, actions){ return actions.subscription.create({plan_id:plan.planId, custom_id:correo()}); },
+      onApprove:function(data){ try{ localStorage.setItem('valdheim_email', correo()); }catch(e){} box.innerHTML='<p class="subok">🎉 <b>Subscription active — welcome aboard, patron!</b><br>PayPal made the first charge; your account totals update within a minute.</p>'; },
+      onError:function(){ msg.textContent='Something went wrong with PayPal — please try again.'; }
+    }).render('#subBox');
+  }
+  document.querySelectorAll('.sub-open').forEach(function(a){
+    a.addEventListener('click', function(ev){
+      ev.preventDefault();
+      if(!correo()){ msg.textContent='⚠️ Write your account email above first — your subscription is tied to it.'; emailEl.focus(); return; }
+      var nivel=a.getAttribute('data-nivel');
+      msg.textContent='Loading PayPal for '+a.getAttribute('data-nombre')+' — $'+a.getAttribute('data-monto')+'/month…';
+      document.getElementById('suscribir').scrollIntoView({behavior:'smooth', block:'center'});
+      var listo=function(){ var plan=(datos.planes||[]).filter(function(p){ return p.nivel===nivel; })[0]; if(plan) pintar(plan); else msg.textContent='That tier is not available right now.'; };
+      if(datos){ cargarSdk(datos.clientId, listo); }
+      else{
+        fetch(API).then(function(r){ return r.json(); }).then(function(j){ datos=j; cargarSdk(j.clientId, listo); })
+        .catch(function(){ msg.textContent='Subscriptions are not available right now — the server may be asleep. Please try again in a bit.'; });
+      }
+    });
+  });
 })();
 </script>
 </body>
