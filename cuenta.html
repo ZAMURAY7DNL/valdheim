@@ -59,6 +59,8 @@
       <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
       <label for="password">Password (at least 6 characters)</label>
       <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+      <label for="password2">Confirm your password (only when creating your account)</label>
+      <input type="password" id="password2" placeholder="••••••••" autocomplete="new-password">
       <button class="go" id="btnCrear" type="submit">Create my account</button>
       <button class="alt" id="btnEntrar" type="button">I already have an account — Sign in</button>
       <div class="msg" id="msg"></div>
@@ -112,6 +114,7 @@
     var msg = document.getElementById("msg");
     var b1 = document.getElementById("btnCrear"), b2 = document.getElementById("btnEntrar");
     if (!email || !password) { msg.className = "msg err"; msg.textContent = "Write your email and your password."; return; }
+    if (ruta === "/registro" && password !== document.getElementById("password2").value) { msg.className = "msg err"; msg.textContent = "The two passwords do not match — type the same one twice."; return; }
     msg.className = "msg"; msg.textContent = "Contacting the realm…"; b1.disabled = true; b2.disabled = true;
     fetch(BASE + ruta, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email, password: password }) })
       .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
