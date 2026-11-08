@@ -469,7 +469,7 @@ function setup(){
         sp_.textContent=word;
         h2.appendChild(sp_);
         if(k<words.length-1) h2.appendChild(d.createTextNode(' '));
-        add(sp_,{ref:h2,y:36,bl:12,d:90+k*26});
+        add(sp_,{ref:h2,y:36,bl:8,d:90+k*26});
       });
       add(h2,{ref:h2,d:90+words.length*26},function(e){h2.style.setProperty('--lp',e.toFixed(3))});
     }
@@ -562,7 +562,7 @@ function measure(){
 
   var tops=items.map(function(it){return it.ref.getBoundingClientRect().top+w.scrollY});
   items.forEach(function(it,i){
-    var a=tops[i]-vh*.94+it.d, b=a+vh*.5, over=b-maxS;
+    var a=tops[i]-vh*.94+it.d, b=a+vh*.28, over=b-maxS;
     if(over>0){a-=over;b-=over}   // ajusta el final para que lo último también se construya
     it.a=a; it.b=b; it.p=-1;
   });
