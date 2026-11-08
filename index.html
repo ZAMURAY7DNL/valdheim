@@ -72,7 +72,8 @@ nav.top .w{display:flex;align-items:center;gap:24px;height:62px}
 #fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .tag{display:inline-block;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ice);border:1px solid color-mix(in srgb,var(--ice) 35%,var(--bd));background:color-mix(in srgb,var(--ice) 8%,transparent);padding:6px 16px;border-radius:99px;margin-bottom:26px}
 .ttl{position:relative;display:block;padding:10px 6px 0}
-.phase-h{text-align:center;margin:46px auto 22px;max-width:640px}.phase-h h3{font-family:Cinzel,serif;font-size:clamp(22px,3.4vw,28px);color:var(--gold);letter-spacing:.03em;margin-top:14px}.phase-h p{color:var(--mu);margin-top:8px}.goal .warn{margin-top:10px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--gold) 40%,var(--bd));border-radius:10px;background:color-mix(in srgb,var(--gold) 8%,transparent);font-size:13.5px}
+.phase-h{text-align:center;margin:46px auto 22px;max-width:640px}.phase-h h3{font-family:Cinzel,serif;font-size:clamp(22px,3.4vw,28px);color:var(--gold);letter-spacing:.03em;margin-top:14px}.phase-h p{color:var(--mu);margin-top:8px}.promise{max-width:760px;margin:0 auto 26px;text-align:center;padding:24px 26px;border-radius:var(--r);border:1px solid color-mix(in srgb,var(--gold) 45%,var(--bd));background:color-mix(in srgb,var(--gold) 9%,transparent)}.promise h3{font-family:Cinzel,serif;color:var(--gold);font-size:clamp(19px,3vw,24px);margin-bottom:10px}.promise p{color:var(--tx)}.donate-box{max-width:720px;margin:0 auto 10px;text-align:center;padding:30px 26px;border-radius:var(--r);background:color-mix(in srgb,var(--card) 72%,transparent);border:1px solid color-mix(in srgb,var(--gold) 30%,var(--bd));box-shadow:0 16px 36px -22px #000c}.donate-box h3{font-family:Cinzel,serif;font-size:clamp(22px,3.6vw,30px);margin:12px 0 10px}.donate-box p{color:var(--mu);max-width:520px;margin:0 auto 20px}
+.goal .warn{margin-top:10px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--gold) 40%,var(--bd));border-radius:10px;background:color-mix(in srgb,var(--gold) 8%,transparent);font-size:13.5px}
 .sub{font-family:Cinzel,serif;font-size:clamp(15px,2.6vw,24px);letter-spacing:.38em;text-transform:uppercase;color:var(--ice);margin-top:16px}
 .ring{position:absolute;left:50%;top:50%;width:640px;height:640px;margin:-320px 0 0 -320px;color:var(--gold);opacity:.14;pointer-events:none;z-index:-1;animation:spin 90s linear infinite}
 .ring text{font-size:30px;fill:currentColor}
@@ -418,9 +419,12 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
 <section class="alt" id="tiers"><div class="w">
   <div class="hd">
     <span class="eye">06 · Support</span>
-    <h2>Become a patron</h2>
-    <p>Monthly support with growing benefits. Every tier includes the benefits of the ones before it.</p>
+    <h2>Support Valdheim</h2>
+    <p>Two ways to help: a one-time direct donation, or monthly patronage. Both count the same toward the goals — and both come back doubled at launch.</p>
   </div>
+  <div class="promise"><h3>🪙 Every donation comes back doubled</h3><p>Direct or monthly, <b>every donation counts</b> toward the funding goals and is recorded under your name. When the game officially launches, you will receive your total support back in in-game coins — <b>at double its value</b>.</p></div>
+  <div class="donate-box"><span class="eye">One-time · Any amount</span><h3>💝 Direct Donation</h3><p>A single donation of any amount, right now. No subscription, no commitment — just direct help for the realm, counted toward the goals and the launch promise like every other donation.</p><a class="btn" href="#" data-donate="1">Donate now</a></div>
+  <div class="phase-h"><span class="eye">Monthly · Cancel anytime</span><h3>Growth &amp; Management Patrons</h3><p>Monthly tiers fund the game's growth and its day-to-day management. Every tier includes the benefits of the ones before it.</p></div>
   <div class="tiers">
     <div class="tier tilt"><h3>🪓 Warrior</h3><div class="pr">$3<small> /mo</small></div><ul class="ck"><li>Your name on the Wall of Honor</li><li>Patron role in the community</li><li>Early development previews</li></ul><a class="btn o" href="#" data-tier="Warrior">Choose Warrior</a></div>
     <div class="tier tilt"><h3>🛡️ Captain</h3><div class="pr">$7<small> /mo</small></div><ul class="ck"><li>Everything in Warrior</li><li>Exclusive profile cosmetic</li><li>Early access to new content</li><li>A vote in community polls</li></ul><a class="btn o" href="#" data-tier="Captain">Choose Captain</a></div>
@@ -428,7 +432,7 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
     <div class="tier tilt"><h3>👑 King</h3><div class="pr">$30<small> /mo</small></div><ul class="ck"><li>Everything in Jarl</li><li>Your name on a building or NPC in the game</li><li>Exclusive skin for one general</li><li>A hand in designing events</li></ul><a class="btn o" href="#" data-tier="King">Choose King</a></div>
     <div class="tier tilt"><h3>🐉 Legend</h3><div class="pr">$75<small> /mo</small></div><ul class="ck"><li>Everything in King</li><li>A character or place in the story inspired by you</li><li>Founder patron credits</li><li>Monthly talks on where the game is heading</li></ul><a class="btn o" href="#" data-tier="Legend">Choose Legend</a></div>
   </div>
-  <p class="note">Prefer a one-time contribution, or sponsoring as a business? Write to us and we'll talk.</p>
+  <p class="note">Sponsoring as a business? Write to us and we'll talk.</p>
 </div></section>
 
 <section class="final"><div class="w">
@@ -728,7 +732,7 @@ d.addEventListener('click',function(e){
     e.preventDefault();
     say(a.dataset.tier
       ?'Thanks for your interest in «'+a.dataset.tier+'». Patron payments open very soon.'
-      :'Coming soon: contact channel. Thanks for your interest!');
+      :(a.dataset.donate?'Direct donations open very soon — the payment link is on its way. Thank you for wanting to help!':'Coming soon: contact channel. Thanks for your interest!'));
   }
 });
 
