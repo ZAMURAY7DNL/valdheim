@@ -261,6 +261,16 @@ footer a{color:var(--gold)}
 }
 </style>
 <meta name="google" content="notranslate">
+
+<style id="fx-donacion">
+.dona-campos{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;margin:12px 0 4px;text-align:left}
+.dona-campos label{font-family:Cinzel,serif;font-size:12.5px;letter-spacing:.1em;color:var(--gold);display:block}
+.dona-campos input{width:100%;margin-top:6px;padding:10px 12px;border-radius:9px;border:1px solid rgba(242,201,92,.35);background:rgba(255,255,255,.06);color:var(--tx);font-size:15px;box-sizing:border-box}
+#donaBotones{margin-top:10px;min-height:48px}
+.dona-msg{min-height:1.25em;font-size:14px;color:#ffe9a8;margin:8px 0 0}
+.dona-alt{font-size:12.5px;color:var(--mu);margin:8px 0 0}
+@media (max-width:560px){.dona-campos{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="sp" aria-hidden="true"></div>
@@ -499,7 +509,7 @@ footer a{color:var(--gold)}
     <p>Two ways to help: a one-time direct donation, or monthly patronage. Both count the same toward the goals — and both come back doubled at launch.</p>
   </div>
   <div class="promise"><h3>🪙 Every donation comes back doubled</h3><p>Direct or monthly, <b>every donation counts</b> toward the funding goals and is recorded under your name. When the game officially launches, you will receive your total support back in in-game coins — <b>at double its value</b>. Your total also unlocks the <a href="#fundador">Founder Collection</a> below.</p></div>
-  <div class="donate-box"><span class="eye">One-time · Any amount</span><h3>💝 Direct Donation</h3><p>A single donation of any amount, right now. No subscription, no commitment — just direct help for the realm, counted toward the goals and the launch promise like every other donation.</p><a class="btn" href="https://www.paypal.me/valdheim" target="_blank" rel="noopener" data-donate="1">Donate now</a></div>
+  <div class="donate-box"><span class="eye">One-time · Any amount</span><h3>💝 Direct Donation</h3><p>A single donation of any amount, right now. No subscription, no commitment — just direct help for the realm, counted toward the goals and the launch promise like every other donation. Donate here and it is registered to your email, counting toward your Founder level.</p><div class="dona-campos"><label>Amount (USD)<input id="donaMonto" type="number" min="1" max="10000" step="1" value="25" inputmode="decimal"></label><label>Your email<input id="donaEmail" type="email" placeholder="you@email.com" autocomplete="email"></label></div><div id="donaBotones"></div><p id="donaMsg" class="dona-msg"></p><p class="dona-alt">Secure payment by PayPal · Prefer PayPal.Me? <a href="https://www.paypal.me/valdheim" target="_blank" rel="noopener">Donate there instead</a> (it arrives without automatic registration).</p></div>
   <div class="phase-h"><span class="eye">Monthly · Auto-charged by PayPal · Cancel anytime</span><h3>Growth &amp; Management Patrons</h3><p>Monthly tiers fund the game's growth and its day-to-day management. PayPal charges your subscription automatically each month — cancel anytime from your PayPal account. Every tier includes the benefits of the ones before it.</p></div>
 
 <div class="subpanel" id="suscribir">
@@ -735,10 +745,10 @@ function frame(){
    TEXTO DINÁMICO: metas y resumen
    ========================================================= */
 function fmt(n){return n.toLocaleString('es-MX')}
-(function funding(){
+window.renderFunding=function(){
   var goals=$$('.goal');
   goals.forEach(function(g){
-    var target=+g.dataset.goal, pct=clamp(RAISED/target), bar=$('.bar',g), s=d.createElement('span');
+    var target=+g.dataset.goal, pct=clamp(RAISED/target), bar=$('.bar',g), vieja=g.querySelector('.pc'); if(vieja) vieja.remove(); var s=d.createElement('span');
     s.className='pc';
     if(pct>=1) s.textContent='✔ Goal reached';
     else if(RAISED>0) s.textContent=Math.round(pct*100)+'% reached · $'+fmt(target-RAISED)+' USD to go';
@@ -754,7 +764,8 @@ function fmt(n){return n.toLocaleString('es-MX')}
   if(pf){ var pt=nxt?Math.min(100,Math.round(RAISED/(+nxt.dataset.goal)*100)):100;
     pf.style.width=pt+'%';
     if(pp) pp.textContent=RAISED>0?pt+'% of the next goal':'0% — be the first founder'; }
-})();
+};
+window.renderFunding();
 
 /* ===== Contador del hero ===== */
 function countUp(el){
@@ -902,6 +913,60 @@ if(w.ResizeObserver) new ResizeObserver(debounce(measure,150)).observe(d.body);
       }
     });
   });
+})();
+</script>
+
+<script>
+(function(){
+  var API='https://desktop-k4oa1i8.tail5b7f9a.ts.net';
+  var msg=document.getElementById('donaMsg');
+  var emailEl=document.getElementById('donaEmail');
+  var montoEl=document.getElementById('donaMonto');
+  function cargarTotales(){
+    fetch(API+'/api/web/totales').then(function(r){return r.json()}).then(function(t){
+      if(t && typeof t.total==='number'){ window.RAISED=t.total; if(window.renderFunding) window.renderFunding(); }
+    }).catch(function(){});
+  }
+  cargarTotales();
+  try{ var previo=localStorage.getItem('valdheim_email'); if(previo && emailEl && !emailEl.value) emailEl.value=previo; }catch(e){}
+  fetch(API+'/api/web/planes').then(function(r){return r.json()}).then(function(d){
+    if(!d || !d.clientId) return;
+    var s=document.createElement('script');
+    s.src='https://www.paypal.com/sdk/js?client-id='+encodeURIComponent(d.clientId)+'&currency=USD&intent=capture';
+    s.setAttribute('data-namespace','paypalDona');
+    s.onload=montar;
+    document.head.appendChild(s);
+  }).catch(function(){});
+  function montar(){
+    if(!window.paypalDona || !document.getElementById('donaBotones')) return;
+    paypalDona.Buttons({
+      style:{shape:'rect',color:'gold',layout:'vertical',label:'donate'},
+      createOrder:function(){
+        var correo=(emailEl.value||'').trim();
+        var monto=parseFloat(montoEl.value);
+        if(!correo || correo.indexOf('@')<0){ msg.textContent='Write your email first — your donation is registered to it.'; return Promise.reject(new Error('email')); }
+        if(!(monto>=1) || monto>10000){ msg.textContent='Enter an amount between $1 and $10,000.'; return Promise.reject(new Error('monto')); }
+        try{ localStorage.setItem('valdheim_email', correo); }catch(e){}
+        return fetch(API+'/api/web/paypal/crear-orden',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:correo,monto:monto})})
+          .then(function(r){return r.json()})
+          .then(function(d){ if(!d || !d.orderId) throw new Error('orden'); return d.orderId; });
+      },
+      onApprove:function(data){
+        return fetch(API+'/api/web/paypal/capturar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:data.orderID})})
+          .then(function(r){return r.json()})
+          .then(function(d){
+            if(d && d.registrado===false && !d.duplicada){
+              msg.textContent='✅ Payment received. Registration is pending — write to valdheim.dnl@gmail.com and we will link it to your account.';
+            } else {
+              msg.textContent='✅ Thank you! Your donation is registered to your email and already counts toward the goals.';
+            }
+            cargarTotales();
+          })
+          .catch(function(){ msg.textContent='Your payment went through, but we could not confirm the registration. Write to valdheim.dnl@gmail.com and we will sort it out.'; });
+      },
+      onError:function(){ msg.textContent='PayPal could not complete the payment. Try again, or use the PayPal.Me link below.'; }
+    }).render('#donaBotones');
+  }
 })();
 </script>
 </body>
