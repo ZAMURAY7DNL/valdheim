@@ -72,6 +72,7 @@ nav.top .w{display:flex;align-items:center;gap:24px;height:62px}
 #fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .tag{display:inline-block;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ice);border:1px solid color-mix(in srgb,var(--ice) 35%,var(--bd));background:color-mix(in srgb,var(--ice) 8%,transparent);padding:6px 16px;border-radius:99px;margin-bottom:26px}
 .ttl{position:relative;display:block;padding:10px 6px 0}
+.phase-h{text-align:center;margin:46px auto 22px;max-width:640px}.phase-h h3{font-family:Cinzel,serif;font-size:clamp(22px,3.4vw,28px);color:var(--gold);letter-spacing:.03em;margin-top:14px}.phase-h p{color:var(--mu);margin-top:8px}.goal .warn{margin-top:10px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--gold) 40%,var(--bd));border-radius:10px;background:color-mix(in srgb,var(--gold) 8%,transparent);font-size:13.5px}
 .sub{font-family:Cinzel,serif;font-size:clamp(15px,2.6vw,24px);letter-spacing:.38em;text-transform:uppercase;color:var(--ice);margin-top:16px}
 .ring{position:absolute;left:50%;top:50%;width:640px;height:640px;margin:-320px 0 0 -320px;color:var(--gold);opacity:.14;pointer-events:none;z-index:-1;animation:spin 90s linear infinite}
 .ring text{font-size:30px;fill:currentColor}
@@ -298,78 +299,119 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
   <div class="hd">
     <span class="eye">04 · Goals</span>
     <h2>Funding goals</h2>
-    <p>Every goal unlocks something concrete. Amounts are monthly and cumulative — from the realm's real running costs all the way to the full dream: professional art and an original soundtrack.</p>
+    <p>Every goal unlocks something concrete, in three phases. Amounts are cumulative totals — every contribution ever received counts toward the next goal.</p>
   </div>
   <div class="raised tilt">
-    <div><small>Current monthly support</small><b id="raised">$0 USD</b><span>Monthly pledges received</span></div>
+    <div><small>Raised so far</small><b id="raised">$0 USD</b><span>Total support received</span></div>
     <div><small>Next goal</small><b id="next">—</b><span id="nextAmt"></span></div>
   </div>
-  <article class="goal tilt" data-goal="25" data-name="Goal 1 · A Home That Never Sleeps">
-    <div class="t"><h3>🖥️ Goal 1 · A home that never sleeps</h3><span class="m">$25 USD/mo</span></div>
-    <p>The realm leaves the home PC: a professional VPS online 24/7, the project's own domain and automatic backups. This alone covers every fixed cost of the game.</p>
+
+  <div class="phase-h"><span class="eye">Phase 1 · Goals $25 – $1,000</span><h3>Foundations &amp; Demo</h3><p>A solid base — and a game you can already play.</p></div>
+  <article class="goal tilt" data-goal="25" data-name="Goal 1 · Own Server">
+    <div class="t"><h3>🖥️ Goal 1 · Own Server</h3><span class="m">$25 USD</span></div>
+    <p>We move the game to a stable server, so everyone can play without interruptions.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 1 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="60" data-name="Goal 2 · Art &amp; Sound">
-    <div class="t"><h3>🎨 Goal 2 · Art &amp; sound</h3><span class="m">$60 USD/mo</span></div>
-    <p>The tools and asset packs that actually make Valdheim's art and sound: new buildings, troops, interface pieces, music and effects. No inflated promises — the real workshop.</p>
+  <article class="goal tilt" data-goal="50" data-name="Goal 2 · Clan Upgrades">
+    <div class="t"><h3>🛡️ Goal 2 · Clan Upgrades</h3><span class="m">$50 USD</span></div>
+    <p>We add the first upgrades for clans.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 2 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="120" data-name="Goal 3 · Clan Events With Real Prizes">
-    <div class="t"><h3>🏆 Goal 3 · Clan events with real prizes</h3><span class="m">$120 USD/mo</span></div>
-    <p>Monthly clan tournaments and community events with real prize pools — and more development hours for new content.</p>
+  <article class="goal tilt" data-goal="100" data-name="Goal 3 · Daily Events">
+    <div class="t"><h3>📅 Goal 3 · Daily Events</h3><span class="m">$100 USD</span></div>
+    <p>Daily events to improve your heroes, with generous rewards for playing every day.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 3 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="250" data-name="Goal 4 · The Next Expansion">
-    <div class="t"><h3>🗺️ Goal 4 · The next expansion</h3><span class="m">$250 USD/mo</span></div>
-    <p>Funds the big content waves — the 14 buildings already designed, elite riders, new lands — and grows the server as more players arrive.</p>
+  <article class="goal tilt" data-goal="250" data-name="Goal 4 · Realm Events &amp; Playable Demo">
+    <div class="t"><h3>🎮 Goal 4 · Realm Events &amp; Playable Demo</h3><span class="m">$250 USD</span></div>
+    <p>We launch individual events with prizes per realm, together with the playable demo.</p>
+    <p class="warn">⚠️ <b>Warning:</b> The demo may change a lot, and its progress will not count toward the launch of the first realm. If you buy packs during the demo, that money will be returned to you as in-game coins on your Realm 1 character when it launches. Progress, however, will not be kept.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 4 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="500" data-name="Goal 5 · Room to Grow">
-    <div class="t"><h3>🌍 Goal 5 · Room to Grow</h3><span class="m">$500 USD/mo</span></div>
-    <p>A stronger server tier and a second realm ready to open when the first one fills up — plus a community event with prizes every single week.</p>
+  <article class="goal tilt" data-goal="500" data-name="Goal 5 · Clan Events">
+    <div class="t"><h3>🏆 Goal 5 · Clan Events</h3><span class="m">$500 USD</span></div>
+    <p>Group competitions with prizes for the whole clan.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 5 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="1000" data-name="Goal 6 · More Development Time">
-    <div class="t"><h3>⏱️ Goal 6 · More Development Time</h3><span class="m">$1,000 USD/mo</span></div>
-    <p>Development becomes a part-time job: monthly content updates, a seasons system, and balance passes far more often.</p>
+  <article class="goal tilt" data-goal="1000" data-name="Goal 6 · Story Chapter One">
+    <div class="t"><h3>📖 Goal 6 · Story Chapter One</h3><span class="m">$1,000 USD</span></div>
+    <p>We add the first playable story chapter, with a tutorial that explains how to play.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 6 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="2000" data-name="Goal 7 · World Bosses &amp; Realm Wars">
-    <div class="t"><h3>🐉 Goal 7 · World Bosses &amp; Realm Wars</h3><span class="m">$2,000 USD/mo</span></div>
-    <p>Giant neutral bosses that take whole clans to bring down, realm-versus-realm wars, and rewards worth fighting over.</p>
+  <div class="phase-h"><span class="eye">Phase 2 · Goals $2,000 – $9,000</span><h3>Depth &amp; Quality</h3><p>Fun for the long run — and looking and sounding the way it deserves.</p></div>
+  <article class="goal tilt" data-goal="2000" data-name="Goal 7 · Talent Trees &amp; Clan Upgrades">
+    <div class="t"><h3>🌳 Goal 7 · Talent Trees &amp; Clan Upgrades</h3><span class="m">$2,000 USD</span></div>
+    <p>We introduce talent-tree systems and clan upgrade systems.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 7 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="3000" data-name="Goal 8 · Clan Strongholds &amp; Sieges">
-    <div class="t"><h3>🏰 Goal 8 · Clan Strongholds &amp; Sieges</h3><span class="m">$3,000 USD/mo</span></div>
-    <p>Clans raise their own strongholds on the map: siege warfare, territory control and defenses your rivals can truly test.</p>
+  <article class="goal tilt" data-goal="3000" data-name="Goal 8 · Fair, Fun Progression">
+    <div class="t"><h3>⚖️ Goal 8 · Fair, Fun Progression</h3><span class="m">$3,000 USD</span></div>
+    <p>We add fair, coherent ways to grow your character's combat power, plus progression systems that make you want to keep playing.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 8 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="4000" data-name="Goal 9 · Full-Time Development">
-    <div class="t"><h3>🔥 Goal 9 · Full-Time Development</h3><span class="m">$4,000 USD/mo</span></div>
-    <p>Valdheim becomes a full-time project: weekly updates, live events and a developer dedicated to the realm every day.</p>
+  <article class="goal tilt" data-goal="4000" data-name="Goal 9 · Conquest With Purpose">
+    <div class="t"><h3>⚔️ Goal 9 · Conquest With Purpose</h3><span class="m">$4,000 USD</span></div>
+    <p>More individual and clan events, with more action and fewer tap-only tasks. We also improve realm conquest with clear, story-driven objectives: capturing shrines, conquering territories that are essential to advance, and conquering territories that grant benefits to the clan.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 9 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="5000" data-name="Goal 10 · Professional Art Overhaul">
-    <div class="t"><h3>🖌️ Goal 10 · Professional Art Overhaul</h3><span class="m">$5,000 USD/mo</span></div>
-    <p>A professional artist gives Valdheim its definitive art: every building in every era, every general, troop and interface piece, drawn as one world.</p>
+  <article class="goal tilt" data-goal="5000" data-name="Goal 10 · Art Redesign">
+    <div class="t"><h3>🖌️ Goal 10 · Art Redesign</h3><span class="m">$5,000 USD</span></div>
+    <p>A professional artist redesigns the game's art.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 10 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="6000" data-name="Goal 11 · An Original Soundtrack">
-    <div class="t"><h3>🎼 Goal 11 · An Original Soundtrack</h3><span class="m">$6,000 USD/mo</span></div>
-    <p>Professional musicians compose Valdheim's own music — city, map, battle and events — with full sound design to match.</p>
+  <article class="goal tilt" data-goal="6000" data-name="Goal 11 · Better Sound Effects">
+    <div class="t"><h3>🔊 Goal 11 · Better Sound Effects</h3><span class="m">$6,000 USD</span></div>
+    <p>The game's sound effects get a full upgrade.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 11 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="8000" data-name="Goal 12 · The Living Saga">
-    <div class="t"><h3>📜 Goal 12 · The Living Saga</h3><span class="m">$8,000 USD/mo</span></div>
-    <p>A professional writer builds the story campaign: hero quests, lore events and a saga that grows with every season.</p>
+  <article class="goal tilt" data-goal="7000" data-name="Goal 12 · Soundtrack">
+    <div class="t"><h3>🎼 Goal 12 · Soundtrack</h3><span class="m">$7,000 USD</span></div>
+    <p>We add the game's first musical themes.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 12 progress"><i></i></div>
   </article>
-  <article class="goal tilt" data-goal="10000" data-name="Goal 13 · A Small Studio">
-    <div class="t"><h3>⚒️ Goal 13 · A Small Studio</h3><span class="m">$10,000 USD/mo</span></div>
-    <p>The dream takes shape: a second developer and a dedicated artist join the project, several realms run at once, and the great clan tournaments begin.</p>
+  <article class="goal tilt" data-goal="8000" data-name="Goal 13 · New Heroes">
+    <div class="t"><h3>🗡️ Goal 13 · New Heroes</h3><span class="m">$8,000 USD</span></div>
+    <p>We add more playable heroes and a new batch of skills.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 13 progress"><i></i></div>
   </article>
-  <p class="note">Amounts are a guide and may be adjusted. The bars update as support grows.</p>
+  <article class="goal tilt" data-goal="9000" data-name="Goal 14 · An Expanding Story">
+    <div class="t"><h3>📜 Goal 14 · An Expanding Story</h3><span class="m">$9,000 USD</span></div>
+    <p>We improve the story and add chapters as the realm is conquered.</p>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 14 progress"><i></i></div>
+  </article>
+  <div class="phase-h"><span class="eye">Phase 3 · Goals $10,000 – $50,000</span><h3>Expansion &amp; Growth</h3><p>More players, a bigger team, new realms and wars between servers.</p></div>
+  <article class="goal tilt" data-goal="10000" data-name="Goal 15 · Outreach &amp; New Realms">
+    <div class="t"><h3>📣 Goal 15 · Outreach &amp; New Realms</h3><span class="m">$10,000 USD</span></div>
+    <p>We look for advertising to attract new players.</p>
+    <p class="warn">⚠️ <b>Warning:</b> The first realm may launch at any of the previous steps. If at this goal there is enough public interest, we will open more realms.</p>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 15 progress"><i></i></div>
+  </article>
+  <article class="goal tilt" data-goal="15000" data-name="Goal 16 · Freelancers">
+    <div class="t"><h3>🛠️ Goal 16 · Freelancers</h3><span class="m">$15,000 USD</span></div>
+    <p>We hire freelancers to implement development improvements and new events.</p>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 16 progress"><i></i></div>
+  </article>
+  <article class="goal tilt" data-goal="20000" data-name="Goal 17 · Themed Events">
+    <div class="t"><h3>🎉 Goal 17 · Themed Events</h3><span class="m">$20,000 USD</span></div>
+    <p>We work on themed events based on real festivities, and more people join the development team.</p>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 17 progress"><i></i></div>
+  </article>
+  <article class="goal tilt" data-goal="30000" data-name="Goal 18 · Seasons &amp; KvK">
+    <div class="t"><h3>👑 Goal 18 · Seasons &amp; KvK</h3><span class="m">$30,000 USD</span></div>
+    <p>We add more realm season systems and start working on KvK (kingdom-versus-kingdom wars).</p>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 18 progress"><i></i></div>
+  </article>
+  <article class="goal tilt" data-goal="40000" data-name="Goal 19 · A Bigger Team">
+    <div class="t"><h3>👥 Goal 19 · A Bigger Team</h3><span class="m">$40,000 USD</span></div>
+    <p>More artists and programmers join to work on improvements.</p>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 19 progress"><i></i></div>
+  </article>
+  <article class="goal tilt" data-goal="50000" data-name="Goal 20 · The Great Leap in Quality">
+    <div class="t"><h3>🚀 Goal 20 · The Great Leap in Quality</h3><span class="m">$50,000 USD</span></div>
+    <p>We add better animations, greatly expand the main story's length, and create a coherent setting for the cross-server wars.</p>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 20 progress"><i></i></div>
+  </article>
+  <p class="note">Goals may change due to community requests, problems or unforeseen events. Even so, we will do everything possible to meet these goals — and even exceed them.</p>
 </div></section>
 
 <section id="uso"><div class="w">
@@ -429,7 +471,7 @@ var debounce=function(fn,ms){var t;return function(){clearTimeout(t);t=setTimeou
 var rm=w.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var fine=w.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-/* ===== CONFIG: set this number to the real monthly support (USD).
+/* ===== CONFIG: set this number to the total support received (USD).
    The goal bars and the summary recalculate themselves. ===== */
 var RAISED=0;
 
@@ -603,7 +645,7 @@ function fmt(n){return n.toLocaleString('es-MX')}
     var target=+g.dataset.goal, pct=clamp(RAISED/target), bar=$('.bar',g), s=d.createElement('span');
     s.className='pc';
     if(pct>=1) s.textContent='✔ Goal reached';
-    else if(RAISED>0) s.textContent=Math.round(pct*100)+'% reached · $'+fmt(target-RAISED)+' USD/mo to go';
+    else if(RAISED>0) s.textContent=Math.round(pct*100)+'% reached · $'+fmt(target-RAISED)+' USD to go';
     else s.textContent='Not funded yet · be the first to support it';
     bar.after(s);
     bar.setAttribute('aria-valuenow',Math.round(pct*100));
@@ -611,7 +653,7 @@ function fmt(n){return n.toLocaleString('es-MX')}
   $('#raised').textContent='$'+fmt(RAISED)+' USD';
   var nxt=goals.find(function(g){return +g.dataset.goal>RAISED});
   $('#next').textContent=nxt?nxt.dataset.name:'All goals reached!';
-  $('#nextAmt').textContent=nxt?'$'+fmt(+nxt.dataset.goal)+' USD/mo':'Thanks to your support';
+  $('#nextAmt').textContent=nxt?'$'+fmt(+nxt.dataset.goal)+' USD':'Thanks to your support';
 })();
 
 /* ===== Contador del hero ===== */
