@@ -200,6 +200,29 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
 .fcard .fvid.wide{aspect-ratio:3/2;max-width:300px}
 .fcard .fimg{width:100%;max-width:300px;display:block;margin:0 auto 12px;border-radius:12px;border:1px solid rgba(242,201,92,.25)}
 </style>
+
+<style id="fx-fasea">
+header.hero{position:relative;overflow:hidden}
+.hero-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;opacity:.55;z-index:0}
+.hero-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,8,15,.42),rgba(5,8,15,.08) 38%,rgba(5,8,15,.55) 72%,rgba(5,8,15,.92))}
+header.hero canvas#fx,header.hero .orb{z-index:1}
+.hero-in{position:relative;z-index:3}
+.cta-sub{margin-top:10px;font-size:13.5px}
+.cta-sub a{color:var(--mu);text-decoration:underline}
+.fteaser{display:flex;align-items:center;gap:14px;max-width:560px;margin:26px auto 4px;padding:10px 16px 10px 10px;border-radius:14px;background:rgba(7,11,22,.72);border:1px solid rgba(242,201,92,.35);text-decoration:none;text-align:left;position:relative;z-index:3;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.fteaser video{width:74px;height:74px;object-fit:cover;border-radius:10px;border:1px solid rgba(242,201,92,.3);flex:none}
+.fteaser .ft-t{flex:1}
+.fteaser .ft-t b{display:block;font-family:Cinzel,serif;letter-spacing:.12em;font-size:13px;color:var(--gold)}
+.fteaser .ft-t small{color:var(--tx);font-size:13.5px;opacity:.85}
+.fteaser .ft-a{color:var(--gold);font-size:13px;white-space:nowrap}
+.pwrap{grid-column:1/-1}
+.pbar{height:14px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(242,201,92,.25);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#8a6a25,var(--gold));transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.pmeta{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-size:13px;color:var(--mu);flex-wrap:wrap}
+.pmeta .stamp{color:var(--gold);opacity:.85}
+footer a{color:var(--gold)}
+@media (max-width:640px){.fteaser{margin-left:6px;margin-right:6px}.hero-art{object-position:center 22%}}
+</style>
 </head>
 <body>
 <div id="sp" aria-hidden="true"></div>
@@ -213,11 +236,14 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
     <li><a href="#hitos">Goals</a></li>
     <li><a href="#uso">The Funds</a></li>
     <li><a href="#tiers">Support</a></li>
+    <li><a href="https://discord.gg/mEQaCKPUGD" target="_blank" rel="noopener">Discord</a></li>
+    <li><a href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener">Play Demo</a></li>
   </ul>
   <a class="btn nav-cta" href="#tiers">Support Us</a>
 </div></nav>
 
 <header class="hero" id="top">
+  <img class="hero-art" src="hero.jpg" alt="" aria-hidden="true"><i class="hero-shade" aria-hidden="true"></i>
   <i class="orb o1" aria-hidden="true"></i><i class="orb o2" aria-hidden="true"></i><i class="orb o3" aria-hidden="true"></i>
   <canvas id="fx" aria-hidden="true"></canvas>
   <div class="w hero-in">
@@ -226,13 +252,14 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
       <h1><span class="sr">Valdheim: Clans of the North</span><span class="ch" aria-hidden="true" style="--i:0">V</span><span class="ch" aria-hidden="true" style="--i:1">A</span><span class="ch" aria-hidden="true" style="--i:2">L</span><span class="ch" aria-hidden="true" style="--i:3">D</span><span class="ch" aria-hidden="true" style="--i:4">H</span><span class="ch" aria-hidden="true" style="--i:5">E</span><span class="ch" aria-hidden="true" style="--i:6">I</span><span class="ch" aria-hidden="true" style="--i:7">M</span></h1>
       <div class="sub">Clans of the North</div>
     </div>
-    <p class="lead fade" style="--d:.9s">A Viking realm at war, where every clan, every general and every battle matters. <b>Clans of the North</b> — help us take it from a home PC to a professional realm that never sleeps.</p>
+    <p class="lead fade" style="--d:.9s"><b>Build your city. Raise your army. Rule the North.</b> A Viking multiplayer strategy realm you can already play in your browser — help us take it from a home PC to a professional server that never sleeps.</p>
     <span class="tag fade" style="--d:1s">Multiplayer strategy · In development</span>
     <div class="cta fade" style="--d:1.05s">
-      <a class="btn" href="#tiers">Support the Project</a>
-      <a class="btn o" href="#roadmap">See the Roadmap</a>
-      <a class="btn o" href="cuenta.html">My Account / Sign in</a>
+      <a class="btn" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener">▶ Play the Demo</a>
+      <a class="btn o" href="#tiers">💛 Support the Project</a>
+      <a class="btn o" href="https://discord.gg/mEQaCKPUGD" target="_blank" rel="noopener">Join the Discord</a>
     </div>
+    <div class="cta-sub fade" style="--d:1.15s"><a href="cuenta.html">My Account / Sign in</a></div>
     <div class="stats">
       <div class="stat tilt fade" style="--d:1.2s"><b data-n="4">4</b><span>Playable generals</span></div>
       <div class="stat tilt fade" style="--d:1.3s"><b data-n="4">4</b><span>Troop families</span></div>
@@ -240,7 +267,9 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
       <div class="stat tilt fade" style="--d:1.5s"><b>PvP + PvE</b><span>Active combat</span></div>
     </div>
   </div>
-</header>
+
+    <a class="fteaser fade" style="--d:1.35s" href="#fundador"><video autoplay muted loop playsinline preload="metadata" poster="marco_poster.jpg" aria-hidden="true"><source src="marco.webm" type="video/webm"><source src="marco.mp4" type="video/mp4"></video><span class="ft-t"><b>THE FOUNDER COLLECTION</b><small>Odin, the All-Father — animated rewards from $10</small></span><span class="ft-a">See them ↓</span></a>
+  </header>
 
 <main>
 <section id="juego"><div class="w">
@@ -278,7 +307,7 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
   <div class="hd">
     <span class="eye">03 · Roadmap</span>
     <h2>Roadmap</h2>
-    <p>The same three phases as our funding goals. Timing depends on the support received.</p>
+    <p>The same three phases as our funding goals. <b>Playable demo in November 2026</b> — the current realm, polished. Realm 1 opens when support reaches $1,000.</p>
   </div>
   <div class="tl">
     <ol>
@@ -304,6 +333,7 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
   <div class="raised tilt">
     <div><small>Raised so far</small><b id="raised">$0 USD</b><span>Total support received</span></div>
     <div><small>Next goal</small><b id="next">—</b><span id="nextAmt"></span></div>
+    <div class="pwrap"><div class="pbar"><i id="pfill"></i></div><div class="pmeta"><span id="ppct">0% of the next goal</span><span class="stamp">Updated · November 2026</span></div></div>
   </div>
 
   <div class="phase-h"><span class="eye">Phase 1 · Goals $25 – $1,000</span><h3>Foundations &amp; Demo</h3><p>A solid base — and a game you can already play.</p></div>
@@ -476,7 +506,7 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
 </div></section>
 </main>
 
-<footer><div class="w">© 2026 Valdheim: Clans of the North · A community project by CUANTEMO. Game in development — benefits and dates may change.</div></footer>
+<footer><div class="w">© 2026 Valdheim: Clans of the North · A community project by CUANTEMO. Game in development — benefits and dates may change. · Contact: <a href="mailto:valdheim.dnl@gmail.com">valdheim.dnl@gmail.com</a> · <a href="https://discord.gg/mEQaCKPUGD" target="_blank" rel="noopener">Discord</a> · Updated November 2026</div></footer>
 
 <button id="up" aria-label="Back to top">↑</button>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -676,6 +706,10 @@ function fmt(n){return n.toLocaleString('es-MX')}
   var nxt=goals.find(function(g){return +g.dataset.goal>RAISED});
   $('#next').textContent=nxt?nxt.dataset.name:'All goals reached!';
   $('#nextAmt').textContent=nxt?'$'+fmt(+nxt.dataset.goal)+' USD':'Thanks to your support';
+  var pf=$('#pfill'), pp=$('#ppct');
+  if(pf){ var pt=nxt?Math.min(100,Math.round(RAISED/(+nxt.dataset.goal)*100)):100;
+    pf.style.width=pt+'%';
+    if(pp) pp.textContent=RAISED>0?pt+'% of the next goal':'0% — be the first founder'; }
 })();
 
 /* ===== Contador del hero ===== */
