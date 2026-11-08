@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valdheim: Clans of the North — Your Account</title>
+<meta name="description" content="Create your Valdheim account with your email. Your donations are recorded to it, and you can link it to your player in the game.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1420; --bg2:#111c2e; --panel:#16233a; --line:#2b3d5c;
+    --gold:#d9a441; --gold2:#f0c268; --ice:#a8c6e8; --text:#e8edf5; --muted:#93a5c0;
+    --ok:#57c785; --err:#e0685c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:radial-gradient(1100px 600px at 50% -10%,#1b2c47 0%,var(--bg) 55%);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 16px 48px}
+  .rune{color:var(--gold);letter-spacing:.6em;text-align:center;font-size:15px;margin-bottom:10px}
+  h1{font-family:Cinzel,serif;font-weight:800;font-size:clamp(34px,6vw,54px);letter-spacing:.14em;text-align:center;color:var(--gold2);text-shadow:0 2px 18px rgba(217,164,65,.25)}
+  .sub{font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.38em;color:var(--ice);text-align:center;font-size:clamp(11px,2.4vw,14px);margin-top:6px}
+  .card{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;max-width:520px;width:100%;margin-top:30px;padding:26px 24px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  .card h2{font-family:Cinzel,serif;font-size:21px;color:var(--gold2);margin-bottom:10px}
+  .card p{color:var(--muted);font-size:14.5px;line-height:1.55}
+  .card p b{color:var(--text)}
+  label{display:block;font-size:13px;font-weight:600;color:var(--ice);margin:20px 0 7px}
+  input[type=email]{width:100%;padding:13px 14px;border-radius:9px;border:1px solid var(--line);background:#0b1220;color:var(--text);font-size:16px;outline:none}
+  input[type=email]:focus{border-color:var(--gold)}
+  button.go{width:100%;margin-top:16px;padding:14px;border:0;border-radius:9px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#23180a;font-weight:700;font-size:16px;cursor:pointer;font-family:Cinzel,serif;letter-spacing:.06em}
+  button.go:disabled{opacity:.55;cursor:wait}
+  .msg{margin-top:14px;font-size:14px;min-height:20px}
+  .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
+  #panel{display:none;margin-top:6px}
+  .codebox{margin:16px 0 6px;background:#0b1220;border:1px dashed var(--gold);border-radius:10px;padding:16px;text-align:center}
+  .codebox .cap{font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--muted)}
+  .codebox .code{font-family:Cinzel,serif;font-size:30px;font-weight:800;letter-spacing:.18em;color:var(--gold2);margin-top:6px;word-break:break-all}
+  button.copy{margin-top:10px;background:transparent;border:1px solid var(--line);color:var(--ice);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13.5px}
+  .stats{display:flex;gap:12px;margin-top:16px}
+  .stat{flex:1;background:#0b1220;border:1px solid var(--line);border-radius:10px;padding:13px;text-align:center}
+  .stat b{display:block;font-size:20px;color:var(--text)}
+  .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+  .level{margin-top:14px;text-align:center;color:var(--ice);font-size:14.5px}
+  .level b{color:var(--gold2)}
+  .links{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .links a{color:var(--ice);text-decoration:none;border:1px solid var(--line);padding:10px 18px;border-radius:9px;font-size:14px}
+  .links a.play{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#23180a;font-weight:700;border:0;font-family:Cinzel,serif}
+  footer{margin-top:34px;color:var(--muted);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+  <div class="rune">ᚹ ᚨ ᛚ ᛞ ᚺ ᛖ ᛁ ᛗ</div>
+  <h1>VALDHEIM</h1>
+  <div class="sub">Clans of the North</div>
+
+  <div class="card">
+    <h2>Your account</h2>
+    <p>Register with the <b>email you choose</b> — it does <b>not</b> have to be your PayPal email. This email is your identity on the website: donations you make while supporting Valdheim are recorded to it, and with your <b>link code</b> you can connect this account to your player in the game and inherit your Founder rewards.</p>
+
+    <form id="form">
+      <label for="email">Your email</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+      <button class="go" id="btn" type="submit">Create account / Sign in</button>
+      <div class="msg" id="msg"></div>
+    </form>
+
+    <div id="panel">
+      <div class="codebox">
+        <div class="cap">Your link code — use it in the game</div>
+        <div class="code" id="code">—</div>
+        <button class="copy" id="copy" type="button">Copy code</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="total">$0</b><span>Donated</span></div>
+        <div class="stat"><b id="count">0</b><span>Donations</span></div>
+      </div>
+      <div class="level" id="level"></div>
+    </div>
+  </div>
+
+  <div class="links">
+    <a class="play" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html">▶ Play Valdheim</a>
+    <a href="index.html">← Back to the support page</a>
+  </div>
+
+  <footer>© 2026 Valdheim: Clans of the North — an independent community game.</footer>
+
+<script>
+  var API = "https://desktop-k4oa1i8.tail5b7f9a.ts.net/api/web/registro";
+  var NIVELES = [
+    [5000, "Character Skin: Odin + 5% shop discount"],
+    [1000, "Odin City · Legendary"],
+    [500, "Odin City · Epic"],
+    [100, "Odin Temple"],
+    [50, "Odin Frame"],
+    [10, "Donor Frame"]
+  ];
+  function nivelDe(total){
+    if (total <= 0) return "Make your first donation to become a <b>Founder</b>.";
+    for (var i = 0; i < NIVELES.length; i++){
+      if (total >= NIVELES[i][0]) return "Founder level: <b>" + NIVELES[i][1] + "</b>";
+    }
+    return "You are a <b>Founder</b> — thank you!";
+  }
+  function mostrar(datos){
+    document.getElementById("code").textContent = datos.codigoEnlace;
+    document.getElementById("total").textContent = "$" + Number(datos.totalDonado).toLocaleString("en-US");
+    document.getElementById("count").textContent = datos.numeroDonaciones;
+    document.getElementById("level").innerHTML = nivelDe(Number(datos.totalDonado));
+    document.getElementById("panel").style.display = "block";
+  }
+  function registrar(email){
+    var msg = document.getElementById("msg"), btn = document.getElementById("btn");
+    msg.className = "msg"; msg.textContent = "Contacting the realm…"; btn.disabled = true;
+    fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email }) })
+      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
+      .then(function(res){
+        btn.disabled = false;
+        if (!res.ok) { msg.className = "msg err"; msg.textContent = res.j.error === "email_invalido" ? "That email does not look valid — check it and try again." : "The realm is not answering right now. Try again in a moment."; return; }
+        try { localStorage.setItem("valdheim_email", email); } catch (e) {}
+        msg.className = "msg ok"; msg.textContent = "Welcome, " + res.j.email + " — this is your account.";
+        mostrar(res.j);
+      })
+      .catch(function(){ btn.disabled = false; msg.className = "msg err"; msg.textContent = "Could not reach the realm. Check your connection and try again."; });
+  }
+  document.getElementById("form").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    var email = document.getElementById("email").value.trim();
+    if (email) registrar(email);
+  });
+  document.getElementById("copy").addEventListener("click", function(){
+    var code = document.getElementById("code").textContent, b = this;
+    if (navigator.clipboard) navigator.clipboard.writeText(code).then(function(){ b.textContent = "Copied ✓"; setTimeout(function(){ b.textContent = "Copy code"; }, 1600); });
+  });
+  try {
+    var guardado = localStorage.getItem("valdheim_email");
+    if (guardado) { document.getElementById("email").value = guardado; registrar(guardado); }
+  } catch (e) {}
+</script>
+</body>
+</html>
