@@ -560,18 +560,18 @@ function setup(){
   // Goals: sweep reveal, bar fills on build
   $$('.raised').forEach(function(r){add(r,{y:50,s:.96})});
   $$('.goal').forEach(function(g,i){
-    add(g,{y:50,clip:'l',d:i*40});
+    add(g,{y:50,clip:'l',d:(i%3)*50});
     var target=+g.dataset.goal||1, pct=clamp(RAISED/target), fill=$('.bar i',g);
-    add(fill,{ref:g,d:i*40+240},function(e){fill.style.width=(pct*e*100).toFixed(2)+'%'});
+    add(fill,{ref:g,d:(i%3)*50+200},function(e){fill.style.width=(pct*e*100).toFixed(2)+'%'});
   });
 
   // Uso
-  $$('.use>div').forEach(function(c,i){add(c,{y:40,s:.9,bl:4,d:i*80})});
+  $$('.use>div').forEach(function(c,i){add(c,{y:40,s:.9,bl:4,d:i*60})});
 
   // Niveles de apoyo: suben con un recorte y el badge aparece al final
   $$('.tiers>.tier').forEach(function(t,i){
-    add(t,{y:90,s:.94,clip:'u',d:i*90});
-    add($('.badge',t),{ref:t,y:0,s:.4,d:i*90+200});
+    add(t,{y:90,s:.94,clip:'u',d:i*60});
+    add($('.badge',t),{ref:t,y:0,s:.4,d:i*60+180});
   });
 
   // Cierre
