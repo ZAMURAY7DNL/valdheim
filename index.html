@@ -583,7 +583,7 @@ var RAISED=0;
 
 var heroIn=$('.hero-in'), hero=$('.hero'), orbs=$$('.orb'), sp=$('#sp'), up=$('#up');
 var cv=$('#fx'), ctx=cv.getContext('2d'), dpr=Math.min(2,w.devicePixelRatio||1);
-var links=$$('nav.top .links a'), secs=links.map(function(a){return $(a.getAttribute('href'))});
+var links=$$('nav.top .links a'), secs=links.map(function(a){var h=a.getAttribute('href');return h&&h.charAt(0)==='#'?$(h):null});
 var toast=$('#toast'), tt=0;
 
 /* =========================================================
