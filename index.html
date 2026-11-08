@@ -194,6 +194,18 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
   .tilt:hover{transform:translateY(-3px)}
 }
 </style>
+
+<style id="fx-videos">
+.hero{isolation:isolate}
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.55;filter:brightness(.8) saturate(1.1)}
+.final{position:relative;overflow:hidden;isolation:isolate}
+.final-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.32;filter:brightness(.75)}
+.odin-duo{display:flex;gap:1.2em;justify-content:center;flex-wrap:wrap;margin:1.8em auto .6em}
+.odin-fig{position:relative;width:min(400px,88vw);aspect-ratio:1/1;border-radius:18px;overflow:hidden;border:1px solid rgba(242,201,92,.35);box-shadow:0 18px 50px rgba(0,0,0,.5);background:#070b16 center/cover no-repeat}
+.odin-fig video{width:100%;height:100%;object-fit:cover;display:block}
+.odin-fig .escudo{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:56%;border-radius:50%;filter:drop-shadow(0 8px 22px rgba(0,0,0,.65))}
+@media (prefers-reduced-motion: reduce){.hero-vid,.final-vid,.odin-fig video{display:none}}
+</style>
 </head>
 <body>
 <div id="sp" aria-hidden="true"></div>
@@ -212,6 +224,7 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
 </div></nav>
 
 <header class="hero" id="top">
+  <video class="hero-vid" autoplay muted loop playsinline preload="auto" poster="templo_dorado_poster.jpg" aria-hidden="true"><source src="templo_dorado.webm" type="video/webm"><source src="templo_dorado.mp4" type="video/mp4"></video>
   <i class="orb o1" aria-hidden="true"></i><i class="orb o2" aria-hidden="true"></i><i class="orb o3" aria-hidden="true"></i>
   <canvas id="fx" aria-hidden="true"></canvas>
   <div class="w hero-in">
@@ -440,7 +453,11 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
 <section id="fundador"><div class="w">
   <div class="hd"><span class="eye">07 · Founder Collection</span><h2>⚔️ Founder Collection: Odin, the All-Father</h2>
   <p>By supporting the project — with a purchase inside the demo, a one-time donation or monthly support — you unlock the benefits of the collection of the founder god: Odin, the All-Father, the one who shaped the world.</p></div>
-  <div class="promise"><h3>🔒 Eternal exclusivity</h3><p>Every item in this collection is unique and unrepeatable. They will never be sold, given away, or handed out through any event, season, promotion or any other means, to anyone else. Only the founders who reach each level will ever own them.</p></div>
+  <div class="odin-duo">
+<figure class="odin-fig" style="margin:0;background-image:url(marco_poster.jpg)"><video autoplay muted loop playsinline preload="metadata" poster="marco_poster.jpg" aria-label="Odin, the All-Father"><source src="marco.webm" type="video/webm"><source src="marco.mp4" type="video/mp4"></video><img class="escudo" src="escudo.jpg" alt="Valdheim emblem"></figure>
+<figure class="odin-fig" style="margin:0;background-image:url(templo_poster.jpg)"><video autoplay muted loop playsinline preload="metadata" poster="templo_poster.jpg" aria-label="The Temple of Odin"><source src="templo.webm" type="video/webm"><source src="templo.mp4" type="video/mp4"></video></figure>
+</div>
+<div class="promise"><h3>🔒 Eternal exclusivity</h3><p>Every item in this collection is unique and unrepeatable. They will never be sold, given away, or handed out through any event, season, promotion or any other means, to anyone else. Only the founders who reach each level will ever own them.</p></div>
   <p class="ftext">Your honors travel with you to <b>every realm</b>: each time you create a new character, in any realm that ever opens, your founder legacy will be there.</p>
   <p class="ftext">It is our way of thanking you for your trust — and of honoring those who believed in the project from the very beginning.</p>
   <div class="phase-h"><span class="eye">🛡️ Founder Levels</span><h3>By one donation — or by accumulation</h3><p>Levels are reached by a direct donation or by accumulation: your contributions add up over time.</p></div>
@@ -456,7 +473,7 @@ footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1p
   <div class="conds"><b>🛒 Discount conditions.</b> Discounts apply only on the game's official website, with your registered account. They stack with any offers and discounts launched in that store. The 10% discount replaces the 5% one — they do not add up.</div>
 </div></section>
 
-<section class="final"><div class="w">
+<section class="final"><video class="final-vid" autoplay muted loop playsinline preload="metadata" poster="templo_pano_poster.jpg" aria-hidden="true"><source src="templo_pano.webm" type="video/webm"><source src="templo_pano.mp4" type="video/mp4"></video><div class="w">
   <div class="cta-box">
     <div class="hd">
       <h2>Let's build this realm together</h2>
