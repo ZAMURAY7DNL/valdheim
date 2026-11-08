@@ -279,6 +279,37 @@ footer a{color:var(--gold)}
 .conds ul{margin:8px 0 0;padding-left:20px}
 .conds li{margin:4px 0;line-height:1.5}
 </style>
+
+<style id="fx-opcion-b">
+.spot-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;align-items:stretch}
+.spot{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:22px 24px;text-align:left}
+.spot h3{margin:6px 0 8px}
+.spot .bar{margin:14px 0 8px}
+.spot .m{font-family:Cinzel,serif;color:var(--gold);font-size:20px}
+.glance{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:22px 24px;text-align:left;display:flex;flex-direction:column;gap:8px}
+.glance b{font-size:26px;color:var(--gold2)}
+.glance .cta{margin-top:auto}
+details.phase-acc{margin:0 auto}
+details.phase-acc>summary{cursor:pointer;list-style:none}
+details.phase-acc>summary::-webkit-details-marker{display:none}
+details.phase-acc>summary .eye::after{content:" ▸";color:var(--gold)}
+details.phase-acc[open]>summary .eye::after{content:" ▾"}
+.goal.done{padding-top:12px;padding-bottom:12px}
+.goal.done p,.goal.done .bar{display:none}
+details.faq-acc{cursor:pointer}
+details.faq-acc>summary{font-family:Cinzel,serif;font-size:19px;color:var(--tx);list-style:none;cursor:pointer}
+details.faq-acc>summary::-webkit-details-marker{display:none}
+details.faq-acc>summary::after{content:" ▸";color:var(--gold)}
+details.faq-acc[open]>summary::after{content:" ▾"}
+.mbar{display:none}
+@media (max-width:900px){.spot-grid{grid-template-columns:1fr}}
+@media (max-width:680px){
+  .mbar{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid color-mix(in srgb,var(--gold) 25%,var(--bd))}
+  .mbar .btn{flex:1;text-align:center}
+  body{padding-bottom:70px}
+  #up{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+</style>
 </head>
 <body>
 <div id="sp" aria-hidden="true"></div>
@@ -286,12 +317,12 @@ footer a{color:var(--gold)}
 <nav class="top" aria-label="Principal"><div class="w">
   <a class="logo" href="#top">VALDHEIM</a>
   <ul class="links">
-    <li><a href="#juego">The Game</a></li>
     <li><a href="#estado">Status</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#tiers">Support</a></li>
     <li><a href="#hitos">Goals</a></li>
     <li><a href="#uso">The Funds</a></li>
-    <li><a href="#tiers">Support</a></li>
+    <li><a href="#juego">The Game</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="https://discord.gg/mEQaCKPUGD" target="_blank" rel="noopener">Discord</a></li>
     <li><a href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener">Play Demo</a></li>
@@ -329,23 +360,9 @@ footer a{color:var(--gold)}
   </header>
 
 <main>
-<section id="juego"><div class="w">
-  <div class="hd">
-    <span class="eye">01 · The Game</span>
-    <h2>A strategy game with an identity of its own</h2>
-    <p>Inspired by the great realm-strategy games, with one clear focus: combat where decisions truly matter, and clans you enjoy being part of — not just orders you follow.</p>
-  </div>
-  <div class="grid">
-    <div class="card tilt"><div class="ico">⚔️</div><h3>Tactical combat</h3><p>Open-field marches, several sides clashing at once, and a troop counter wheel (archers, lancers, infantry) where your choices count.</p></div>
-    <div class="card tilt"><div class="ico">🛡️</div><h3>Clans for everyone</h3><p>A clan system where the leader and every single member have a role, goals and rewards of their own.</p></div>
-    <div class="card tilt"><div class="ico">🗺️</div><h3>A shared realm</h3><p>A living map with players and neutral camps, where conquering, defending and forging alliances have real consequences.</p></div>
-    <div class="card tilt"><div class="ico">🏰</div><h3>Building &amp; generals</h3><p>Nine buildings to grow your city, and generals with identities of their own to lead your armies.</p></div>
-  </div>
-</div></section>
-
 <section class="alt" id="estado"><div class="w">
   <div class="hd">
-    <span class="eye">02 · Status</span>
+    <span class="eye">01 · Status</span>
     <h2>Where we are today</h2>
     <p>Full transparency: this already works — and this is where your support is needed.</p>
   </div>
@@ -360,32 +377,88 @@ footer a{color:var(--gold)}
   <p class="note">So far, the effort has gone into code, the combat system, balance and clans. The look keeps evolving on purpose: first the foundation, then the beauty.</p>
 </div></section>
 
-<section id="roadmap"><div class="w">
+<section id="resumen"><div class="w">
+  <div class="spot-grid">
+    <article class="spot tilt" id="spotCard">
+      <span class="eye">02 · Next goal</span>
+      <h3 id="spotName">Goal 1 · Own Server</h3>
+      <p id="spotDesc">We move the game to a stable server, so everyone can play without interruptions.</p>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Next goal progress"><i id="spotFill"></i></div>
+      <span class="pc" id="spotPc">Not funded yet · be the first to support it</span>
+      <div><span class="m" id="spotAmt">$25 USD</span></div>
+    </article>
+    <div class="glance">
+      <span class="eye">At a glance</span>
+      <div><small>Raised so far</small><br><b id="glanceRaised">$0 USD</b></div>
+      <p>The playable demo opens in <b>November 2026</b>. Every donation counts toward the goals — and comes back doubled in coins at launch.</p>
+      <div class="cta">
+        <a class="btn" href="#tiers">💛 Support</a>
+        <a class="btn o" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener">▶ Play the Demo</a>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="uso"><div class="w">
+  <div class="hd"><span class="eye">03 · The Funds</span><h2>Where does your support go?</h2></div>
+  <div class="use">
+    <div><span class="ui">🖥️</span><b>Server</b><span>VPS, domain &amp; backups</span></div>
+    <div><span class="ui">🎨</span><b>Art</b><span>Tools &amp; asset packs</span></div>
+    <div><span class="ui">🎼</span><b>Music</b><span>Tracks &amp; sound packs</span></div>
+    <div><span class="ui">⏱️</span><b>Development</b><span>Time, events &amp; balance</span></div>
+  </div>
+</div></section>
+
+<section class="alt" id="tiers"><div class="w">
   <div class="hd">
-    <span class="eye">03 · Roadmap</span>
-    <h2>Roadmap</h2>
-    <p>The same three phases as our funding goals. <b>Playable demo in November 2026</b> — the current realm, polished. The first realm launches as soon as it's ready — and more realms open as the community grows.</p>
+    <span class="eye">04 · Support</span>
+    <h2>Support Valdheim</h2>
+    <p>Two ways to help: a one-time direct donation, or monthly patronage. Both count the same toward the goals — and both come back doubled at launch.</p>
   </div>
-  <div class="tl">
-    <ol>
-      <li class="now"><span class="conn"><i></i></span><span class="node">1</span>
-        <div class="card tilt ph"><small>Phase 1 · Goals $25 – $1,000</small><h3>Foundations &amp; Demo <span class="pill">NOW</span></h3><ul class="ck">
-          <li>A stable server of our own</li><li>First clan upgrades</li><li>Daily events &amp; clan events</li><li>Realm events and the playable demo</li><li>Story chapter one, with tutorial</li></ul></div></li>
-      <li><span class="conn"><i></i></span><span class="node">2</span>
-        <div class="card tilt ph"><small>Phase 2 · Goals $2,000 – $9,000</small><h3>Depth &amp; Quality</h3><ul class="ck nx">
-          <li>Talent trees &amp; clan upgrades</li><li>Fair, fun progression</li><li>Conquest with purpose: shrines &amp; territories</li><li>Professional art, sound effects &amp; soundtrack</li><li>New heroes &amp; an expanding story</li></ul></div></li>
-      <li><span class="node">3</span>
-        <div class="card tilt ph"><small>Phase 3 · Goals $10,000 – $50,000</small><h3>Expansion &amp; Growth</h3><ul class="ck nx">
-          <li>Outreach &amp; new realms</li><li>Freelancers &amp; a bigger team</li><li>Themed events</li><li>Seasons &amp; KvK wars</li><li>The great leap in quality</li></ul></div></li>
-    </ol>
+  <div class="promise"><h3>🪙 Every donation comes back doubled</h3><p>Direct or monthly, <b>every donation counts</b> toward the funding goals and is recorded under your name. When the game officially launches, you will receive your total support back in in-game coins — <b>at double its value</b>. Your total also unlocks the <a href="#fundador">Founder Collection</a> below.</p></div>
+  <div class="donate-box"><span class="eye">One-time · Any amount</span><h3>💝 Direct Donation</h3><p>A single donation of any amount, right now. No subscription, no commitment — just direct help for the realm, counted toward the goals and the launch promise like every other donation. Donate here and it is registered to your email, counting toward your Founder level.</p><div class="dona-campos"><label>Amount (USD)<input id="donaMonto" type="number" min="1" max="10000" step="1" value="25" inputmode="decimal"></label><label>Your email<input id="donaEmail" type="email" placeholder="you@email.com" autocomplete="email"></label></div><div id="donaBotones"></div><p id="donaMsg" class="dona-msg"></p><p class="dona-alt">Secure payment by PayPal · Prefer PayPal.Me? <a href="https://www.paypal.me/valdheim" target="_blank" rel="noopener">Donate there instead</a> (it arrives without automatic registration).</p></div>
+  <div class="phase-h"><span class="eye">Monthly · Auto-charged by PayPal · Cancel anytime</span><h3>Growth &amp; Management Patrons</h3><p>Monthly tiers fund the game's growth and its day-to-day management. PayPal charges your subscription automatically each month — cancel anytime from your PayPal account. Every tier includes the benefits of the ones before it.</p></div>
+
+<div class="subpanel" id="suscribir">
+  <div class="subrow"><label for="subEmail">YOUR ACCOUNT EMAIL</label><input id="subEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
+  <p class="subnote" id="subMsg">Pick a tier below and PayPal will ask you to approve the monthly charge. Your subscription is tied to this email — use the same one as your Valdheim account so every payment counts toward your Founder totals.</p>
+  <div id="subBox"></div>
+</div>
+  <div class="tiers">
+    <div class="tier tilt"><h3>🪓 Warrior</h3><div class="pr">$10<small> /mo</small></div><ul class="ck"><li>Your name on the Wall of Honor</li><li>Patron role in the community</li><li>Early development previews</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="warrior" data-nombre="Warrior" data-monto="10">Subscribe</a></div>
+    <div class="tier tilt"><h3>🛡️ Captain</h3><div class="pr">$20<small> /mo</small></div><ul class="ck"><li>Everything in Warrior</li><li>Exclusive profile cosmetic</li><li>Early access to new content</li><li>A vote in community polls</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="captain" data-nombre="Captain" data-monto="20">Subscribe</a></div>
+    <div class="tier tilt hot"><span class="badge">Most popular</span><h3>⚔️ Jarl</h3><div class="pr">$50<small> /mo</small></div><ul class="ck"><li>Everything in Captain</li><li>Exclusive in-game title</li><li>Welcome resource pack</li><li>Suggest and vote on new mechanics</li><li>Private channel with the developer</li></ul><a class="btn sub-open" href="#suscribir" data-nivel="jarl" data-nombre="Jarl" data-monto="50">Subscribe</a></div>
+    <div class="tier tilt"><h3>👑 King</h3><div class="pr">$100<small> /mo</small></div><ul class="ck"><li>Everything in Jarl</li><li>Your name on a building or NPC in the game</li><li>Exclusive skin for one general</li><li>A hand in designing events</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="king" data-nombre="King" data-monto="100">Subscribe</a></div>
+    <div class="tier tilt"><h3>🐉 Legend</h3><div class="pr">$500<small> /mo</small></div><ul class="ck"><li>Everything in King</li><li>A character or place in the story inspired by you</li><li>Founder patron credits</li><li>Monthly talks on where the game is heading</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="legend" data-nombre="Legend" data-monto="500">Subscribe</a></div>
   </div>
+  <p class="note">Sponsoring as a business? Write to us and we'll talk.</p>
+</div></section>
+
+<section id="fundador"><div class="w">
+  <div class="hd"><span class="eye">05 · Founder Collection</span><h2>⚔️ Founder Collection: Odin, the All-Father</h2>
+  <p>By supporting the project — with a purchase inside the demo, a one-time donation or monthly support — you unlock the benefits of the collection of the founder god: Odin, the All-Father, the one who shaped the world.</p></div>
+  <div class="promise"><h3>🔒 Eternal exclusivity</h3><p>Every item in this collection is unique and unrepeatable. They will never be sold, given away, or handed out through any event, season, promotion or any other means, to anyone else. Only the founders who reach each level will ever own them.</p></div>
+  <p class="ftext">Your honors travel with you to <b>every realm</b>: each time you create a new character, in any realm that ever opens, your founder legacy will be there.</p>
+  <p class="ftext">It is our way of thanking you for your trust — and of honoring those who believed in the project from the very beginning.</p>
+  <div class="phase-h"><span class="eye">🛡️ Founder Levels</span><h3>By one donation — or by accumulation</h3><p>Levels are reached by a direct donation or by accumulation: your contributions add up over time.</p></div>
+  <p class="note">👁️ <b>About these previews:</b> the videos shown in each level are examples. Every reward will be adapted to the game's final art and its story, so the final versions may not look exactly the same.</p>
+  <div class="fgrid">
+    <div class="fcard"><video class="fvid" autoplay muted loop playsinline preload="metadata" poster="marco_poster.jpg" aria-label="Odin Frame"><source src="marco.webm" type="video/webm"><source src="marco.mp4" type="video/mp4"></video><span class="amt">From $10</span><h3>Odin Frame</h3><p>The founder god's frame for your avatar, with the seal of the All-Father.</p></div>
+    <div class="fcard"><video class="fvid" autoplay muted loop playsinline preload="metadata" poster="templo_poster.jpg" aria-label="Odin Temple"><source src="templo.webm" type="video/webm"><source src="templo.mp4" type="video/mp4"></video><span class="amt">From $50</span><h3>Odin Temple</h3><p>An exclusive decoration for your city: the temple of the founder god.</p></div>
+    <div class="fcard"><video class="fvid wide" autoplay muted loop playsinline preload="metadata" poster="templo_pano_poster.jpg" aria-label="Odin City, Epic"><source src="templo_pano.webm" type="video/webm"><source src="templo_pano.mp4" type="video/mp4"></video><span class="amt">From $100</span><h3>Odin City · Epic</h3><p>An epic skin for your city, bathed in the power of the All-Father.</p></div>
+    <div class="fcard"><video class="fvid wide" autoplay muted loop playsinline preload="metadata" poster="templo_dorado_poster.jpg" aria-label="Odin City, Legendary"><source src="templo_dorado.webm" type="video/webm"><source src="templo_dorado.mp4" type="video/mp4"></video><span class="amt">From $500</span><h3>Odin City · Legendary</h3><p>The legendary version of the city skin.</p></div>
+    <div class="fcard"><img class="fimg" src="piel.jpg" alt="Character Skin: Odin"><span class="amt">From $1,000</span><h3>Character Skin: Odin</h3><p>Your character becomes the founder god himself — plus a 5% discount in the official store.</p></div>
+    <div class="fcard top"><video class="fvid wide" autoplay muted loop playsinline preload="metadata" poster="carro_poster.jpg" aria-label="Odin's Battle Chariot"><source src="carro.webm" type="video/webm"><source src="carro.mp4" type="video/mp4"></video><span class="amt">From $5,000</span><h3>Odin's Battle Chariot</h3><p>A war chariot worthy of the All-Father, drawn by Geri and Freki, his giant wolves — plus a 10% permanent discount in the official store.</p></div>
+  </div>
+  <div class="conds"><b>🛒 Discount conditions.</b> Discounts apply only on the game's official website, with your registered account. They stack with any offers and discounts launched in that store. The 10% discount replaces the 5% one — they do not add up.</div>
+  <div class="conds"><b>📜 Founder Terms — the short version.</b><ul><li>Founder Collection rewards are digital in-game gifts, delivered as the game launches. Founder supporters receive double in-game coins for their donations when Realm 1 launches.</li><li>Monthly tiers are real PayPal subscriptions (auto-charge). Cancel anytime from your PayPal account — future charges stop; months already paid are not refunded.</li><li>A PayPal dispute or chargeback voids your rewards and Founder status.</li><li><b>Full refund if the game never launches</b> — for every supporter, whenever they joined. That promise is never removed.</li></ul><p><a href="founder-terms.html">Read the full Founder Terms →</a></p></div>
 </div></section>
 
 <section class="alt" id="hitos"><div class="w">
   <div class="hd">
-    <span class="eye">04 · Goals</span>
+    <span class="eye">06 · Goals</span>
     <h2>Funding goals</h2>
-    <p>Every goal unlocks something concrete, in three phases. Amounts are cumulative totals — every contribution ever received counts toward the next goal.</p>
+    <p>Every goal unlocks something concrete, in three phases. Amounts are cumulative totals — every contribution ever received counts toward the next goal.</p><p><button class="btn o" id="expandMetas" type="button">Show all 20 goals</button></p>
   </div>
   <div class="raised tilt">
     <div><small>Raised so far</small><b id="raised">$0 USD</b><span>Total support received</span></div>
@@ -393,7 +466,7 @@ footer a{color:var(--gold)}
     <div class="pwrap"><div class="pbar"><i id="pfill"></i></div><div class="pmeta"><span id="ppct">0% of the next goal</span><span class="stamp">Updated · November 2026</span></div></div>
   </div>
 
-  <div class="phase-h"><span class="eye">Phase 1 · Goals $25 – $1,000</span><h3>Foundations &amp; Demo</h3><p>A solid base — and a game you can already play.</p></div>
+  <details class="phase-acc" open><summary class="phase-h"><span class="eye">Phase 1 · Goals $25 – $1,000</span><h3>Foundations &amp; Demo</h3><p>A solid base — and a game you can already play.</p></summary>
   <article class="goal tilt" data-goal="25" data-name="Goal 1 · Own Server">
     <div class="t"><h3>🖥️ Goal 1 · Own Server</h3><span class="m">$25 USD</span></div>
     <p>We move the game to a stable server, so everyone can play without interruptions.</p>
@@ -425,7 +498,8 @@ footer a{color:var(--gold)}
     <p>We add the first playable story chapter, with a tutorial that explains how to play.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 6 progress"><i></i></div>
   </article>
-  <div class="phase-h"><span class="eye">Phase 2 · Goals $2,000 – $9,000</span><h3>Depth &amp; Quality</h3><p>Fun for the long run — and looking and sounding the way it deserves.</p></div>
+</details>
+  <details class="phase-acc"><summary class="phase-h"><span class="eye">Phase 2 · Goals $2,000 – $9,000</span><h3>Depth &amp; Quality</h3><p>Fun for the long run — and looking and sounding the way it deserves.</p></summary>
   <article class="goal tilt" data-goal="2000" data-name="Goal 7 · Talent Trees &amp; Clan Upgrades">
     <div class="t"><h3>🌳 Goal 7 · Talent Trees &amp; Clan Upgrades</h3><span class="m">$2,000 USD</span></div>
     <p>We introduce talent-tree systems and clan upgrade systems.</p>
@@ -466,7 +540,8 @@ footer a{color:var(--gold)}
     <p>We improve the story and add chapters as the realm is conquered.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 14 progress"><i></i></div>
   </article>
-  <div class="phase-h"><span class="eye">Phase 3 · Goals $10,000 – $50,000</span><h3>Expansion &amp; Growth</h3><p>More players, a bigger team, new realms and wars between servers.</p></div>
+</details>
+  <details class="phase-acc"><summary class="phase-h"><span class="eye">Phase 3 · Goals $10,000 – $50,000</span><h3>Expansion &amp; Growth</h3><p>More players, a bigger team, new realms and wars between servers.</p></summary>
   <article class="goal tilt" data-goal="10000" data-name="Goal 15 · Outreach &amp; New Realms">
     <div class="t"><h3>📣 Goal 15 · Outreach &amp; New Realms</h3><span class="m">$10,000 USD</span></div>
     <p>We look for advertising to attract new players.</p>
@@ -498,74 +573,55 @@ footer a{color:var(--gold)}
     <p>We add better animations, greatly expand the main story's length, and create a coherent setting for the cross-server wars.</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Goal 20 progress"><i></i></div>
   </article>
+</details>
   <p class="note">Goals may change due to community requests, problems or unforeseen events. Even so, we will do everything possible to meet these goals — and even exceed them.</p>
 </div></section>
 
-<section id="uso"><div class="w">
-  <div class="hd"><span class="eye">05 · The Funds</span><h2>Where does your support go?</h2></div>
-  <div class="use">
-    <div><span class="ui">🖥️</span><b>Server</b><span>VPS, domain &amp; backups</span></div>
-    <div><span class="ui">🎨</span><b>Art</b><span>Tools &amp; asset packs</span></div>
-    <div><span class="ui">🎼</span><b>Music</b><span>Tracks &amp; sound packs</span></div>
-    <div><span class="ui">⏱️</span><b>Development</b><span>Time, events &amp; balance</span></div>
-  </div>
-</div></section>
-
-<section class="alt" id="tiers"><div class="w">
+<section id="juego"><div class="w">
   <div class="hd">
-    <span class="eye">06 · Support</span>
-    <h2>Support Valdheim</h2>
-    <p>Two ways to help: a one-time direct donation, or monthly patronage. Both count the same toward the goals — and both come back doubled at launch.</p>
+    <span class="eye">07 · The Game</span>
+    <h2>A strategy game with an identity of its own</h2>
+    <p>Inspired by the great realm-strategy games, with one clear focus: combat where decisions truly matter, and clans you enjoy being part of — not just orders you follow.</p>
   </div>
-  <div class="promise"><h3>🪙 Every donation comes back doubled</h3><p>Direct or monthly, <b>every donation counts</b> toward the funding goals and is recorded under your name. When the game officially launches, you will receive your total support back in in-game coins — <b>at double its value</b>. Your total also unlocks the <a href="#fundador">Founder Collection</a> below.</p></div>
-  <div class="donate-box"><span class="eye">One-time · Any amount</span><h3>💝 Direct Donation</h3><p>A single donation of any amount, right now. No subscription, no commitment — just direct help for the realm, counted toward the goals and the launch promise like every other donation. Donate here and it is registered to your email, counting toward your Founder level.</p><div class="dona-campos"><label>Amount (USD)<input id="donaMonto" type="number" min="1" max="10000" step="1" value="25" inputmode="decimal"></label><label>Your email<input id="donaEmail" type="email" placeholder="you@email.com" autocomplete="email"></label></div><div id="donaBotones"></div><p id="donaMsg" class="dona-msg"></p><p class="dona-alt">Secure payment by PayPal · Prefer PayPal.Me? <a href="https://www.paypal.me/valdheim" target="_blank" rel="noopener">Donate there instead</a> (it arrives without automatic registration).</p></div>
-  <div class="phase-h"><span class="eye">Monthly · Auto-charged by PayPal · Cancel anytime</span><h3>Growth &amp; Management Patrons</h3><p>Monthly tiers fund the game's growth and its day-to-day management. PayPal charges your subscription automatically each month — cancel anytime from your PayPal account. Every tier includes the benefits of the ones before it.</p></div>
-
-<div class="subpanel" id="suscribir">
-  <div class="subrow"><label for="subEmail">YOUR ACCOUNT EMAIL</label><input id="subEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
-  <p class="subnote" id="subMsg">Pick a tier below and PayPal will ask you to approve the monthly charge. Your subscription is tied to this email — use the same one as your Valdheim account so every payment counts toward your Founder totals.</p>
-  <div id="subBox"></div>
-</div>
-  <div class="tiers">
-    <div class="tier tilt"><h3>🪓 Warrior</h3><div class="pr">$10<small> /mo</small></div><ul class="ck"><li>Your name on the Wall of Honor</li><li>Patron role in the community</li><li>Early development previews</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="warrior" data-nombre="Warrior" data-monto="10">Subscribe</a></div>
-    <div class="tier tilt"><h3>🛡️ Captain</h3><div class="pr">$20<small> /mo</small></div><ul class="ck"><li>Everything in Warrior</li><li>Exclusive profile cosmetic</li><li>Early access to new content</li><li>A vote in community polls</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="captain" data-nombre="Captain" data-monto="20">Subscribe</a></div>
-    <div class="tier tilt hot"><span class="badge">Most popular</span><h3>⚔️ Jarl</h3><div class="pr">$50<small> /mo</small></div><ul class="ck"><li>Everything in Captain</li><li>Exclusive in-game title</li><li>Welcome resource pack</li><li>Suggest and vote on new mechanics</li><li>Private channel with the developer</li></ul><a class="btn sub-open" href="#suscribir" data-nivel="jarl" data-nombre="Jarl" data-monto="50">Subscribe</a></div>
-    <div class="tier tilt"><h3>👑 King</h3><div class="pr">$100<small> /mo</small></div><ul class="ck"><li>Everything in Jarl</li><li>Your name on a building or NPC in the game</li><li>Exclusive skin for one general</li><li>A hand in designing events</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="king" data-nombre="King" data-monto="100">Subscribe</a></div>
-    <div class="tier tilt"><h3>🐉 Legend</h3><div class="pr">$500<small> /mo</small></div><ul class="ck"><li>Everything in King</li><li>A character or place in the story inspired by you</li><li>Founder patron credits</li><li>Monthly talks on where the game is heading</li></ul><a class="btn o sub-open" href="#suscribir" data-nivel="legend" data-nombre="Legend" data-monto="500">Subscribe</a></div>
+  <div class="grid">
+    <div class="card tilt"><div class="ico">⚔️</div><h3>Tactical combat</h3><p>Open-field marches, several sides clashing at once, and a troop counter wheel (archers, lancers, infantry) where your choices count.</p></div>
+    <div class="card tilt"><div class="ico">🛡️</div><h3>Clans for everyone</h3><p>A clan system where the leader and every single member have a role, goals and rewards of their own.</p></div>
+    <div class="card tilt"><div class="ico">🗺️</div><h3>A shared realm</h3><p>A living map with players and neutral camps, where conquering, defending and forging alliances have real consequences.</p></div>
+    <div class="card tilt"><div class="ico">🏰</div><h3>Building &amp; generals</h3><p>Nine buildings to grow your city, and generals with identities of their own to lead your armies.</p></div>
   </div>
-  <p class="note">Sponsoring as a business? Write to us and we'll talk.</p>
 </div></section>
 
-<section id="fundador"><div class="w">
-  <div class="hd"><span class="eye">07 · Founder Collection</span><h2>⚔️ Founder Collection: Odin, the All-Father</h2>
-  <p>By supporting the project — with a purchase inside the demo, a one-time donation or monthly support — you unlock the benefits of the collection of the founder god: Odin, the All-Father, the one who shaped the world.</p></div>
-  <div class="promise"><h3>🔒 Eternal exclusivity</h3><p>Every item in this collection is unique and unrepeatable. They will never be sold, given away, or handed out through any event, season, promotion or any other means, to anyone else. Only the founders who reach each level will ever own them.</p></div>
-  <p class="ftext">Your honors travel with you to <b>every realm</b>: each time you create a new character, in any realm that ever opens, your founder legacy will be there.</p>
-  <p class="ftext">It is our way of thanking you for your trust — and of honoring those who believed in the project from the very beginning.</p>
-  <div class="phase-h"><span class="eye">🛡️ Founder Levels</span><h3>By one donation — or by accumulation</h3><p>Levels are reached by a direct donation or by accumulation: your contributions add up over time.</p></div>
-  <p class="note">👁️ <b>About these previews:</b> the videos shown in each level are examples. Every reward will be adapted to the game's final art and its story, so the final versions may not look exactly the same.</p>
-  <div class="fgrid">
-    <div class="fcard"><video class="fvid" autoplay muted loop playsinline preload="metadata" poster="marco_poster.jpg" aria-label="Odin Frame"><source src="marco.webm" type="video/webm"><source src="marco.mp4" type="video/mp4"></video><span class="amt">From $10</span><h3>Odin Frame</h3><p>The founder god's frame for your avatar, with the seal of the All-Father.</p></div>
-    <div class="fcard"><video class="fvid" autoplay muted loop playsinline preload="metadata" poster="templo_poster.jpg" aria-label="Odin Temple"><source src="templo.webm" type="video/webm"><source src="templo.mp4" type="video/mp4"></video><span class="amt">From $50</span><h3>Odin Temple</h3><p>An exclusive decoration for your city: the temple of the founder god.</p></div>
-    <div class="fcard"><video class="fvid wide" autoplay muted loop playsinline preload="metadata" poster="templo_pano_poster.jpg" aria-label="Odin City, Epic"><source src="templo_pano.webm" type="video/webm"><source src="templo_pano.mp4" type="video/mp4"></video><span class="amt">From $100</span><h3>Odin City · Epic</h3><p>An epic skin for your city, bathed in the power of the All-Father.</p></div>
-    <div class="fcard"><video class="fvid wide" autoplay muted loop playsinline preload="metadata" poster="templo_dorado_poster.jpg" aria-label="Odin City, Legendary"><source src="templo_dorado.webm" type="video/webm"><source src="templo_dorado.mp4" type="video/mp4"></video><span class="amt">From $500</span><h3>Odin City · Legendary</h3><p>The legendary version of the city skin.</p></div>
-    <div class="fcard"><img class="fimg" src="piel.jpg" alt="Character Skin: Odin"><span class="amt">From $1,000</span><h3>Character Skin: Odin</h3><p>Your character becomes the founder god himself — plus a 5% discount in the official store.</p></div>
-    <div class="fcard top"><video class="fvid wide" autoplay muted loop playsinline preload="metadata" poster="carro_poster.jpg" aria-label="Odin's Battle Chariot"><source src="carro.webm" type="video/webm"><source src="carro.mp4" type="video/mp4"></video><span class="amt">From $5,000</span><h3>Odin's Battle Chariot</h3><p>A war chariot worthy of the All-Father, drawn by Geri and Freki, his giant wolves — plus a 10% permanent discount in the official store.</p></div>
+<section id="roadmap"><div class="w">
+  <div class="hd">
+    <span class="eye">08 · Roadmap</span>
+    <h2>Roadmap</h2>
+    <p>The same three phases as our funding goals. <b>Playable demo in November 2026</b> — the current realm, polished. The first realm launches as soon as it's ready — and more realms open as the community grows.</p>
   </div>
-  <div class="conds"><b>🛒 Discount conditions.</b> Discounts apply only on the game's official website, with your registered account. They stack with any offers and discounts launched in that store. The 10% discount replaces the 5% one — they do not add up.</div>
-  <div class="conds"><b>📜 Founder Terms.</b><ul><li>Founder Collection rewards are digital in-game items, delivered as the game launches. Art shown is concept art — the final version is still in development.</li><li>Founder supporters receive double in-game coins for their donations when Realm 1 launches, and keep their Founder level on the account they registered with.</li><li>Monthly tiers are real subscriptions (PayPal, auto-charge, cancel anytime). Past months are never refunded; future charges stop on cancellation.</li><li>A PayPal dispute or chargeback voids your rewards and Founder status.</li><li>Full refund if the game never launches — see the FAQ below. That promise stands for every supporter, whenever they joined.</li></ul></div>
+  <div class="tl">
+    <ol>
+      <li class="now"><span class="conn"><i></i></span><span class="node">1</span>
+        <div class="card tilt ph"><small>Phase 1 · Goals $25 – $1,000</small><h3>Foundations &amp; Demo <span class="pill">NOW</span></h3><ul class="ck">
+          <li>A stable server of our own</li><li>First clan upgrades</li><li>Daily events &amp; clan events</li><li>Realm events and the playable demo</li><li>Story chapter one, with tutorial</li></ul></div></li>
+      <li><span class="conn"><i></i></span><span class="node">2</span>
+        <div class="card tilt ph"><small>Phase 2 · Goals $2,000 – $9,000</small><h3>Depth &amp; Quality</h3><ul class="ck nx">
+          <li>Talent trees &amp; clan upgrades</li><li>Fair, fun progression</li><li>Conquest with purpose: shrines &amp; territories</li><li>Professional art, sound effects &amp; soundtrack</li><li>New heroes &amp; an expanding story</li></ul></div></li>
+      <li><span class="node">3</span>
+        <div class="card tilt ph"><small>Phase 3 · Goals $10,000 – $50,000</small><h3>Expansion &amp; Growth</h3><ul class="ck nx">
+          <li>Outreach &amp; new realms</li><li>Freelancers &amp; a bigger team</li><li>Themed events</li><li>Seasons &amp; KvK wars</li><li>The great leap in quality</li></ul></div></li>
+    </ol>
+  </div>
 </div></section>
 
 <section class="alt" id="faq"><div class="w">
-  <div class="hd"><span class="eye">08 · FAQ</span><h2>❓ Frequently Asked Questions</h2>
+  <div class="hd"><span class="eye">09 · FAQ</span><h2>❓ Frequently Asked Questions</h2>
   <p>Straight answers, in writing — the same rules for every supporter.</p></div>
   <div class="faq-item"><h3>Is my support a purchase?</h3><p>No. Your support is a donation to help develop the game, not a purchase. Founder Collection rewards are thank-you gifts: digital in-game items delivered as the game launches. They give no ownership or share in the project.</p></div>
   <div class="faq-item"><h3>What happens if the game never launches?</h3><p>You get a full refund of everything you donated or paid in subscriptions. Write to valdheim.dnl@gmail.com and we refund you in full. This guarantee is never removed, not even retroactively.</p></div>
   <div class="faq-item"><h3>Can I get a refund if I change my mind?</h3><p>Within 14 days of your payment, yes — write to valdheim.dnl@gmail.com. After that, donations are not refunded mid-development: the money is already at work building the game. The only exception is the guarantee above: if the game never launches, you get everything back.</p></div>
-  <div class="faq-item"><h3>How do monthly tiers work?</h3><p>Warrior $10, Captain $20, Jarl $50, King $100 and Legend $500 per month are real PayPal subscriptions with automatic charge. Cancel anytime from your PayPal account — future charges stop, months already paid are not refunded, and what you already gave still counts toward your Founder level.</p></div>
-  <div class="faq-item"><h3>What does my support fund?</h3><p>Development of the game itself: the server, the art, and new features. Goals and dates on this page are estimates — we post public updates in Discord (#anuncios) when they move.</p></div>
-  <div class="faq-item"><h3>When can I play?</h3><p>The playable demo opens in November 2026, with the current features, more polished — nothing new added for the demo. Progress in the demo does not carry over to Realm 1. If you buy a pack during the demo, that money comes back to you as in-game coins on your Realm 1 character when it launches.</p></div>
-  <div class="faq-item"><h3>How do I link my game account?</h3><p>Register on this site with your email (My Account) and enter the game with the same email and password. One identity for web and game — no codes to type.</p></div>
+  <details class="faq-item faq-acc"><summary>How do monthly tiers work?</summary><p>Warrior $10, Captain $20, Jarl $50, King $100 and Legend $500 per month are real PayPal subscriptions with automatic charge. Cancel anytime from your PayPal account — future charges stop, months already paid are not refunded, and what you already gave still counts toward your Founder level.</p></details>
+  <details class="faq-item faq-acc"><summary>What does my support fund?</summary><p>Development of the game itself: the server, the art, and new features. Goals and dates on this page are estimates — we post public updates in Discord (#anuncios) when they move.</p></details>
+  <details class="faq-item faq-acc"><summary>When can I play?</summary><p>The playable demo opens in November 2026, with the current features, more polished — nothing new added for the demo. Progress in the demo does not carry over to Realm 1. If you buy a pack during the demo, that money comes back to you as in-game coins on your Realm 1 character when it launches.</p></details>
+  <details class="faq-item faq-acc"><summary>How do I link my game account?</summary><p>Register on this site with your email (My Account) and enter the game with the same email and password. One identity for web and game — no codes to type.</p></details>
 </div></section>
 
 <section class="final"><div class="w">
@@ -989,6 +1045,54 @@ if(w.ResizeObserver) new ResizeObserver(debounce(measure,150)).observe(d.body);
       onError:function(){ msg.textContent='PayPal could not complete the payment. Try again, or use the PayPal.Me link below.'; }
     }).render('#donaBotones');
   }
+})();
+</script>
+<div class="mbar"><a class="btn" href="#tiers">💛 Support</a><a class="btn o" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener">▶ Play Demo</a></div>
+
+<script>
+(function(){
+  function enhance(){
+    var goals=Array.prototype.slice.call(document.querySelectorAll('.goal'));
+    var nxt=null, nxtAmt=0;
+    var na=document.getElementById('nextAmt');
+    if(na){ var m=/\$([0-9,]+)/.exec(na.textContent||''); if(m) nxtAmt=+m[1].replace(/,/g,''); }
+    goals.forEach(function(g){
+      var bar=g.querySelector('.bar');
+      var pct=bar?(+bar.getAttribute('aria-valuenow')||0):0;
+      g.classList.toggle('done', pct>=100);
+      if(nxtAmt && +g.dataset.goal===nxtAmt) nxt=g;
+    });
+    if(nxt){ var d=nxt.closest('details'); if(d) d.open=true; }
+    var r=document.getElementById('raised');
+    var raisedTxt=r?r.textContent:'$0 USD';
+    var gr=document.getElementById('glanceRaised'); if(gr) gr.textContent=raisedTxt;
+    var sn=document.getElementById('spotName'); if(!sn) return;
+    if(nxt){
+      sn.textContent=nxt.dataset.name;
+      var p=nxt.querySelector('p');
+      document.getElementById('spotDesc').textContent=p?p.textContent:'';
+      var pct2=+nxt.querySelector('.bar').getAttribute('aria-valuenow')||0;
+      document.getElementById('spotFill').style.width=pct2+'%';
+      document.getElementById('spotAmt').textContent='$'+nxtAmt.toLocaleString('es-MX')+' USD';
+      var pc=nxt.querySelector('.pc');
+      document.getElementById('spotPc').textContent=(pc?pc.textContent:'')+' · Raised so far: '+raisedTxt;
+    } else {
+      sn.textContent='All goals reached!';
+      document.getElementById('spotDesc').textContent='Every funding goal has been met thanks to this community.';
+      document.getElementById('spotFill').style.width='100%';
+      document.getElementById('spotAmt').textContent='';
+      document.getElementById('spotPc').textContent='Raised so far: '+raisedTxt;
+    }
+  }
+  if(window.renderFunding){ var _rf=window.renderFunding; window.renderFunding=function(){ _rf(); enhance(); }; }
+  enhance();
+  var b=document.getElementById('expandMetas');
+  if(b){ b.addEventListener('click', function(){
+    var ds=Array.prototype.slice.call(document.querySelectorAll('details.phase-acc'));
+    var abrir=ds.some(function(x){return !x.open});
+    ds.forEach(function(x){ x.open=abrir; });
+    b.textContent=abrir?'Hide the goal phases':'Show all 20 goals';
+  }); }
 })();
 </script>
 </body>
