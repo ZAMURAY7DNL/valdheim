@@ -331,6 +331,11 @@ details.faq-acc[open]>summary::after{content:" ▾"}
    ni quedan transparentes sobre el arte; «My Account» se lee como boton */
 header.hero .cta .btn{flex:0 1 auto;align-self:flex-start;background:rgba(7,11,22,.88)}
 header.hero .cta-sub a{display:inline-block;margin-top:2px;padding:9px 20px;border:1px solid rgba(242,201,92,.5);border-radius:10px;background:rgba(7,11,22,.88);color:var(--gold,#f2c95c);font-weight:600;text-decoration:none}
+/* La tarjeta del Fundador ya no tapa las estadisticas: el hero respira
+   (la tarjeta pasa DESPUES de las stats, en el flujo) y las stats quedan
+   por encima de cualquier solape */
+header.hero .stats{position:relative;z-index:4}
+header.hero .fteaser{margin-top:38px}
 @media(max-width:680px){.cd-u{min-width:60px}.cd-u b{font-size:24px}}
 </style>
 </head>
@@ -390,9 +395,10 @@ header.hero .cta-sub a{display:inline-block;margin-top:2px;padding:9px 20px;bord
       <div class="stat tilt fade" style="--d:1.4s"><b data-n="2">2</b><span>Chats: realm &amp; clan</span></div>
       <div class="stat tilt fade" style="--d:1.5s"><b>PvP + PvE</b><span>Active combat</span></div>
     </div>
+    <a class="fteaser fade" style="--d:1.35s" href="#fundador"><video autoplay muted loop playsinline preload="metadata" poster="marco_poster.jpg" aria-hidden="true"><source src="marco.webm" type="video/webm"><source src="marco.mp4" type="video/mp4"></video><span class="ft-t"><b>THE FOUNDER COLLECTION</b><small>Odin, the All-Father — animated rewards from $10</small></span><span class="ft-a">See them <img class="ic" src="iconos/ico_abajo.png" alt="" loading="lazy"></span></a>
   </div>
 
-    <a class="fteaser fade" style="--d:1.35s" href="#fundador"><video autoplay muted loop playsinline preload="metadata" poster="marco_poster.jpg" aria-hidden="true"><source src="marco.webm" type="video/webm"><source src="marco.mp4" type="video/mp4"></video><span class="ft-t"><b>THE FOUNDER COLLECTION</b><small>Odin, the All-Father — animated rewards from $10</small></span><span class="ft-a">See them <img class="ic" src="iconos/ico_abajo.png" alt="" loading="lazy"></span></a>
+    
   </header>
 
 <main>
