@@ -317,6 +317,18 @@ details.faq-acc[open]>summary::after{content:" ▾"}
 .ico .ic{width:40px;height:40px;vertical-align:middle}
 .ui .ic{width:34px;height:34px}
 </style>
+
+<style id="fx-cuenta">
+.cd{margin:26px auto 4px;max-width:520px;text-align:center}
+.cd-t{font-family:Cinzel,serif;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--gold,#f2c95c)}
+.cd-nums{display:flex;gap:10px;justify-content:center;margin:12px 0 8px}
+.cd-u{min-width:70px;padding:10px 6px;border:1px solid rgba(242,201,92,.35);border-radius:12px;background:rgba(7,11,22,.55)}
+.cd-u b{display:block;font-family:Cinzel,serif;font-size:30px;line-height:1;color:#ffe9a8}
+.cd-u span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+.cd-f{font-size:13px;opacity:.8}
+.btn.off{opacity:.55;pointer-events:none}
+@media(max-width:680px){.cd-u{min-width:60px}.cd-u b{font-size:24px}}
+</style>
 </head>
 <body>
 <div id="sp" aria-hidden="true"></div>
@@ -332,7 +344,7 @@ details.faq-acc[open]>summary::after{content:" ▾"}
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="https://discord.gg/mEQaCKPUGD" target="_blank" rel="noopener">Discord</a></li>
-    <li><a href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener">Play Demo</a></li>
+    <li><a href="#demoCountdown">Demo · Nov 15</a></li>
   </ul>
   <a class="btn nav-cta" href="#tiers">Support Us</a>
 </div></nav>
@@ -350,7 +362,18 @@ details.faq-acc[open]>summary::after{content:" ▾"}
     <p class="lead fade" style="--d:.9s"><b>Build your city. Raise your army. Rule the North.</b> A Viking multiplayer strategy realm you can already play in your browser — help us take it from a home PC to a professional server that never sleeps.</p>
     <span class="tag fade" style="--d:1s">Multiplayer strategy · In development</span>
     <div class="cta fade" style="--d:1.05s">
-      <a class="btn" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener"><img class="ic" src="iconos/ico_play.png" alt="" loading="lazy"> Play the Demo</a>
+      
+<div class="cd fade" style="--d:1.05s" id="demoCountdown">
+  <div class="cd-t">The playable demo launches in</div>
+  <div class="cd-nums" role="timer" aria-label="Countdown to the demo launch">
+    <div class="cd-u"><b id="cdD">7</b><span>days</span></div>
+    <div class="cd-u"><b id="cdH">00</b><span>hours</span></div>
+    <div class="cd-u"><b id="cdM">00</b><span>min</span></div>
+    <div class="cd-u"><b id="cdS">00</b><span>sec</span></div>
+  </div>
+  <div class="cd-f">November 15, 2026</div>
+</div>
+
       <a class="btn o" href="#tiers"><img class="ic" src="iconos/ico_corazon.png" alt="" loading="lazy"> Support the Project</a>
       <a class="btn o" href="https://discord.gg/mEQaCKPUGD" target="_blank" rel="noopener">Join the Discord</a>
     </div>
@@ -400,7 +423,7 @@ details.faq-acc[open]>summary::after{content:" ▾"}
       <p>The playable demo opens in <b>November 2026</b>. Every donation counts toward the goals — and comes back doubled in coins at launch.</p>
       <div class="cta">
         <a class="btn" href="#tiers"><img class="ic" src="iconos/ico_corazon.png" alt="" loading="lazy"> Support</a>
-        <a class="btn o" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener"><img class="ic" src="iconos/ico_play.png" alt="" loading="lazy"> Play the Demo</a>
+        <a class="btn o off" aria-disabled="true">Demo · November 15</a>
       </div>
     </div>
   </div>
@@ -639,7 +662,7 @@ details.faq-acc[open]>summary::after{content:" ▾"}
     </div>
     <div class="cta">
       <a class="btn" href="#tiers">I want to support</a>
-      <a class="btn o" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener">Play Valdheim</a> <a class="btn o" href="cuenta.html">My Account</a>
+      <a class="btn o off" aria-disabled="true">Demo · November 15</a> <a class="btn o" href="cuenta.html">My Account</a>
     </div>
   </div>
 </div></section>
@@ -1054,7 +1077,7 @@ if(w.ResizeObserver) new ResizeObserver(debounce(measure,150)).observe(d.body);
   }
 })();
 </script>
-<div class="mbar"><a class="btn" href="#tiers"><img class="ic" src="iconos/ico_corazon.png" alt="" loading="lazy"> Support</a><a class="btn o" href="https://desktop-k4oa1i8.tail5b7f9a.ts.net/visor.html" target="_blank" rel="noopener"><img class="ic" src="iconos/ico_play.png" alt="" loading="lazy"> Play Demo</a></div>
+<div class="mbar"><a class="btn" href="#tiers"><img class="ic" src="iconos/ico_corazon.png" alt="" loading="lazy"> Support</a><a class="btn" href="#demoCountdown">Demo · Nov 15</a></div>
 
 <script>
 (function(){
@@ -1100,6 +1123,30 @@ if(w.ResizeObserver) new ResizeObserver(debounce(measure,150)).observe(d.body);
     ds.forEach(function(x){ x.open=abrir; });
     b.textContent=abrir?'Hide the goal phases':'Show all 20 goals';
   }); }
+})();
+</script>
+
+<script>
+(function(){
+  var fin = new Date('2026-11-15T20:37:00-05:00').getTime();
+  function p(n){ return (n<10?'0':'')+n; }
+  function tick(){
+    var d = fin - Date.now();
+    var D=document.getElementById('cdD'), H=document.getElementById('cdH'),
+        M=document.getElementById('cdM'), S=document.getElementById('cdS');
+    if(!D) return;
+    if(d <= 0){
+      D.textContent='0'; H.textContent='00'; M.textContent='00'; S.textContent='00';
+      var t=document.querySelector('.cd-t'); if(t) t.textContent='The demo is launching — stay tuned';
+      return;
+    }
+    D.textContent = Math.floor(d/86400000);
+    H.textContent = p(Math.floor(d/3600000)%24);
+    M.textContent = p(Math.floor(d/60000)%60);
+    S.textContent = p(Math.floor(d/1000)%60);
+    setTimeout(tick, 1000);
+  }
+  tick();
 })();
 </script>
 </body>
