@@ -705,7 +705,7 @@ var fine=w.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 /* ===== CONFIG: set this number to the total support received (USD).
    The goal bars and the summary recalculate themselves. ===== */
-var RAISED=0;
+window.RAISED=0;
 
 var heroIn=$('.hero-in'), hero=$('.hero'), orbs=$$('.orb'), sp=$('#sp'), up=$('#up');
 var cv=$('#fx'), ctx=cv.getContext('2d'), dpr=Math.min(2,w.devicePixelRatio||1);
