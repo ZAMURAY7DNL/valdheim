@@ -78,6 +78,24 @@
     </div>
   </div>
 
+
+  <div class="card" id="refCard" style="display:none">
+    <h2>Referrals — earn 20% of every donation you bring</h2>
+    <p>Share your link with your friends and your clan. When someone registers through it and donates, <b>20% of every donation</b> is yours. Take it as <b>real money</b> (paid by PayPal, from $10) or as <b>runes at DOUBLE value</b>, delivered to your in-game mailbox.</p>
+    <label for="refLink">Your referral link</label>
+    <input type="text" id="refLink" readonly>
+    <button class="alt" id="btnCopiar" type="button">Copy link</button>
+    <div class="stats">
+      <div class="stat"><b id="refCuentas">0</b><span>Referred</span></div>
+      <div class="stat"><b id="refGanado">$0</b><span>Earned</span></div>
+      <div class="stat"><b id="refSaldo">$0</b><span>Available</span></div>
+    </div>
+    <button class="go" id="btnDinero" type="button">Claim as money</button>
+    <button class="alt" id="btnRunas" type="button">Claim as runes (×2 value)</button>
+    <div class="msg" id="refMsg"></div>
+    <div class="level" id="refReclamos"></div>
+  </div>
+
   <div class="links">
     <span class="play">The playable demo launches on November 15, 2026</span>
     <a href="index.html">← Back to the support page</a>
@@ -87,6 +105,13 @@
 
 <script>
   var BASE = "https://valdheim.duckdns.org/api/web";
+  try {
+    var refUrl = new URLSearchParams(location.search).get('ref');
+    if (refUrl) localStorage.setItem('valdheim_ref', refUrl.trim().toUpperCase());
+  } catch (e) {}
+  function refGuardado() {
+    try { return localStorage.getItem('valdheim_ref') || undefined; } catch (e) { return undefined; }
+  }
   var NIVELES = [
     [5000, "Character Skin: Odin + 5% shop discount"],
     [1000, "Odin City · Legendary"],
@@ -117,7 +142,7 @@
     if (!email || !password) { msg.className = "msg err"; msg.textContent = "Write your email and your password."; return; }
     if (ruta === "/registro" && password !== document.getElementById("password2").value) { msg.className = "msg err"; msg.textContent = "The two passwords do not match — type the same one twice."; return; }
     msg.className = "msg"; msg.textContent = "Contacting the realm…"; b1.disabled = true; b2.disabled = true;
-    fetch(BASE + ruta, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email, password: password }) })
+    fetch(BASE + ruta, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email, password: password, referido: refGuardado() }) })
       .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
       .then(function(res){
         b1.disabled = false; b2.disabled = false;
@@ -135,9 +160,87 @@
         try { localStorage.setItem("valdheim_email", email); } catch (err) {}
         msg.className = "msg ok"; msg.textContent = ruta === "/registro" ? "Account created. Welcome to Valdheim!" : "Welcome back!";
         mostrar(res.j);
+        sesion = { email: email, password: password };
+        cargarReferidos();
       })
       .catch(function(){ b1.disabled = false; b2.disabled = false; msg.className = "msg err"; msg.textContent = "Could not reach the realm. Check your connection and try again."; });
   }
+  var sesion = null;
+  function dinero(n){ return "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function cargarReferidos(){
+    if (!sesion) return;
+    fetch(BASE + "/referidos/estado", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sesion) })
+      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
+      .then(function(res){
+        if (!res.ok) return;
+        var j = res.j, saldo = Number(j.resumen.saldoPendiente);
+        document.getElementById("refLink").value = "https://playvaldheim.com/?ref=" + j.codigoReferido;
+        document.getElementById("refCuentas").textContent = j.resumen.cuentasReferidas;
+        document.getElementById("refGanado").textContent = dinero(j.resumen.totalGanado);
+        document.getElementById("refSaldo").textContent = dinero(saldo);
+        var bD = document.getElementById("btnDinero"), bR = document.getElementById("btnRunas");
+        bD.disabled = saldo < Number(j.minimoDinero);
+        bD.textContent = saldo < Number(j.minimoDinero)
+          ? "Claim as money (from " + dinero(j.minimoDinero) + ")"
+          : "Claim " + dinero(saldo) + " as money";
+        var runas = Math.floor(saldo * Number(j.runasPorDolar)) * Number(j.multiplicadorRunas);
+        bR.disabled = saldo <= 0;
+        bR.textContent = saldo <= 0 ? "Claim as runes (×2 value)" : "Claim as " + runas.toLocaleString("en-US") + " runes (×2 value)";
+        var lista = document.getElementById("refReclamos");
+        if (j.reclamos && j.reclamos.length) {
+          lista.innerHTML = j.reclamos.map(function(r){
+            var que = r.tipo === "runas" ? Number(r.runas).toLocaleString("en-US") + " runes" : dinero(r.monto);
+            var estado = r.estado === "solicitado" ? (r.tipo === "runas" ? "on its way to your mailbox" : "requested — payment pending")
+              : r.estado === "pagado" ? "paid" : "delivered";
+            return "• " + que + " — " + estado;
+          }).join("<br>");
+        } else {
+          lista.textContent = "";
+        }
+        document.getElementById("refCard").style.display = "block";
+        if (location.hash === "#referidos") {
+          document.getElementById("refCard").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      })
+      .catch(function(){});
+  }
+  function reclamar(tipo){
+    var msg = document.getElementById("refMsg");
+    var bD = document.getElementById("btnDinero"), bR = document.getElementById("btnRunas");
+    bD.disabled = true; bR.disabled = true;
+    msg.className = "msg"; msg.textContent = "Claiming…";
+    var cuerpo = { email: sesion.email, password: sesion.password, tipo: tipo };
+    fetch(BASE + "/referidos/reclamar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) })
+      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
+      .then(function(res){
+        if (!res.ok) {
+          msg.className = "msg err";
+          var e = res.j && res.j.error;
+          msg.textContent =
+            e === "saldo_insuficiente" ? "You need at least $10 available to claim money — or take it as runes instead." :
+            e === "sin_saldo" ? "No balance available yet." :
+            e === "credenciales_invalidas" ? "Your session expired — sign in again." :
+            "The realm is not answering right now. Try again in a moment.";
+          cargarReferidos();
+          return;
+        }
+        msg.className = "msg ok";
+        msg.textContent = tipo === "runas"
+          ? "Done! Your runes will arrive in your in-game mailbox next time you enter the game."
+          : "Done! Your payment is requested — it will be sent to your account email by PayPal.";
+        cargarReferidos();
+      })
+      .catch(function(){ msg.className = "msg err"; msg.textContent = "Could not reach the realm. Check your connection and try again."; cargarReferidos(); });
+  }
+  document.getElementById("btnDinero").addEventListener("click", function(){ reclamar("dinero"); });
+  document.getElementById("btnRunas").addEventListener("click", function(){ reclamar("runas"); });
+  document.getElementById("btnCopiar").addEventListener("click", function(){
+    var campo = document.getElementById("refLink");
+    campo.select();
+    try { navigator.clipboard.writeText(campo.value); } catch (e) { document.execCommand("copy"); }
+    document.getElementById("refMsg").className = "msg ok";
+    document.getElementById("refMsg").textContent = "Link copied — share it with your clan!";
+  });
   document.getElementById("form").addEventListener("submit", function(ev){ ev.preventDefault(); enviar("/registro"); });
   document.getElementById("btnEntrar").addEventListener("click", function(){ enviar("/login"); });
   try {
