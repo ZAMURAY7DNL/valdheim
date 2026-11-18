@@ -869,7 +869,6 @@ function frame(){
 
   if(y<=heroH){
     heroIn.style.transform='translate3d(0,'+(y*.22).toFixed(1)+'px,0)';
-    heroIn.style.opacity=clamp(1-y/(heroH*.85)).toFixed(3);
     orbs.forEach(function(o,i){o.style.translate='0 '+(y*(.12+i*.06)).toFixed(1)+'px'});
   }
 
