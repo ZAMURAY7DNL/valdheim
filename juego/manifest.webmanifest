@@ -1,1 +1,17 @@
-{"background_color":"#111D29","description":"Mini-reino vikingo de la comunidad CUANTEMO","display":"standalone","icons":[{"sizes":"192x192","src":"iconos/app_icono_192.png","type":"image/png"},{"sizes":"512x512","src":"iconos/app_icono_512.png","type":"image/png"},{"purpose":"maskable","sizes":"512x512","src":"iconos/app_icono_512_maskable.png","type":"image/png"}],"lang":"es","name":"VALDHEIM: Clans of the North","orientation":"landscape","scope":".","short_name":"VALDHEIM","start_url":"visor.html","theme_color":"#111D29"}
+{
+  "name": "VALDHEIM: Clans of the North",
+  "short_name": "VALDHEIM",
+  "description": "Mini-reino vikingo de la comunidad CUANTEMO",
+  "lang": "es",
+  "start_url": "visor.html",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#111D29",
+  "theme_color": "#111D29",
+  "icons": [
+    { "src": "iconos/app_icono_192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "iconos/app_icono_512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "iconos/app_icono_512_maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
