@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valdheim: Clans of the North — Your Account</title>
-<meta name="description" content="Create your Valdheim account with your email and a password. The same account signs you in to the website and the game.">
+<meta name="description" content="Create your Valdheim account with your email, a verification code and a password. The same account signs you in to the website and the game.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -53,7 +53,7 @@
 
   <div class="card">
     <h2>Your account</h2>
-    <p>One account for everything: register with the <b>email you choose</b> (it does <b>not</b> have to be your PayPal email) and <b>create a password</b>. The <b>same email and password</b> will sign you in to the game — your donations and your Founder level follow your account automatically. <b>No codes to type, ever.</b></p>
+    <p>One account for everything: register with the <b>email you choose</b> (it does <b>not</b> have to be your PayPal email). We email you a <b>6-digit code</b> to prove the email is yours, and then you <b>create your password</b>. The <b>same email and password</b> will sign you in to the game — your donations and your Founder level follow your account automatically. When you finish, <b>your referral link appears below — and arrives in your email too</b>.</p>
 
     <form id="form">
       <label for="email">Your email</label>
@@ -62,6 +62,13 @@
       <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
       <label for="password2">Confirm your password (only when creating your account)</label>
       <input type="password" id="password2" placeholder="••••••••" autocomplete="new-password">
+      <div id="pasoCodigo" style="display:none">
+        <label for="codigo">The 6-digit code we emailed you</label>
+        <input type="text" id="codigo" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" maxlength="6">
+        <button class="go" id="btnVerificar" type="button">Verify code</button>
+        <button class="alt" id="btnReenviar" type="button">Resend code</button>
+      </div>
+      <button class="go" id="btnClave" type="button" style="display:none">Set my password and create the account</button>
       <button class="go" id="btnCrear" type="submit">Create my account</button>
       <button class="alt" id="btnEntrar" type="button">I already have an account — Sign in</button>
       <div class="msg" id="msg"></div>
@@ -134,36 +141,134 @@
     document.getElementById("level").innerHTML = nivelDe(Number(datos.totalDonado));
     document.getElementById("panel").style.display = "block";
   }
-  function enviar(ruta){
-    var email = document.getElementById("email").value.trim();
-    var password = document.getElementById("password").value;
+  function errorTexto(e){
+    return e === "email_invalido" ? "That email does not look valid — check it and try again." :
+      e === "contrasena_corta" ? "The password needs at least 6 characters." :
+      e === "cuenta_ya_tiene_contrasena" ? "This email already has a password — use “Sign in” instead." :
+      e === "cuenta_ya_verificada" ? "This email is already registered and verified — use “Sign in”. If you never set a password, set it from the game door." :
+      e === "credenciales_invalidas" ? "Wrong email or password. If you are new, use “Create my account”." :
+      e === "codigo_espera" ? "A code was just sent to that email — wait a minute and try again." :
+      e === "codigo_incorrecto" ? "That code does not match — check your email and try again." :
+      e === "codigo_expirado" ? "That code expired — ask for a new one." :
+      e === "codigo_agotado" ? "Too many wrong tries with that code — ask for a new one." :
+      e === "codigo_no_pedido" ? "No code is pending for this email — start the registration again." :
+      e === "cuenta_no_existe" ? "No account with that email — create it first." :
+      e === "token_invalido" || e === "token_expirado" ? "That step expired — start the registration again." :
+      e === "demasiados_intentos" ? "Too many tries — wait a few minutes and try again." :
+      "The realm is not answering right now. Try again in a moment.";
+  }
+  function post(ruta, cuerpo){
+    return fetch(BASE + ruta, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) })
+      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); });
+  }
+  function ocupados(b){
+    ["btnCrear", "btnEntrar", "btnVerificar", "btnReenviar", "btnClave"].forEach(function(id){
+      var el = document.getElementById(id); if (el) el.disabled = b;
+    });
+  }
+  function decir(texto, tipo){
     var msg = document.getElementById("msg");
-    var b1 = document.getElementById("btnCrear"), b2 = document.getElementById("btnEntrar");
-    if (!email || !password) { msg.className = "msg err"; msg.textContent = "Write your email and your password."; return; }
-    if (ruta === "/registro" && password !== document.getElementById("password2").value) { msg.className = "msg err"; msg.textContent = "The two passwords do not match — type the same one twice."; return; }
-    msg.className = "msg"; msg.textContent = "Contacting the realm…"; b1.disabled = true; b2.disabled = true;
-    fetch(BASE + ruta, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email, password: password, referido: refGuardado() }) })
-      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
+    msg.className = "msg" + (tipo ? " " + tipo : "");
+    msg.textContent = texto;
+  }
+  function correoDelForm(){
+    return document.getElementById("email").value.trim();
+  }
+  function sinConexion(){
+    ocupados(false);
+    decir("Could not reach the realm. Check your connection and try again.", "err");
+  }
+  // Entrar de siempre: correo + contraseña.
+  function entrar(){
+    var email = correoDelForm();
+    var password = document.getElementById("password").value;
+    if (!email || !password) { decir("Write your email and your password.", "err"); return; }
+    decir("Contacting the realm…", "");
+    ocupados(true);
+    post("/login", { email: email, password: password })
       .then(function(res){
-        b1.disabled = false; b2.disabled = false;
-        if (!res.ok) {
-          msg.className = "msg err";
-          var e = res.j && res.j.error;
-          msg.textContent =
-            e === "email_invalido" ? "That email does not look valid — check it and try again." :
-            e === "contrasena_corta" ? "The password needs at least 6 characters." :
-            e === "cuenta_ya_tiene_contrasena" ? "This email already has an account — use “Sign in” instead." :
-            e === "credenciales_invalidas" ? "Wrong email or password. If you are new, use “Create my account”." :
-            "The realm is not answering right now. Try again in a moment.";
-          return;
-        }
+        ocupados(false);
+        if (!res.ok) { decir(errorTexto(res.j && res.j.error), "err"); return; }
         try { localStorage.setItem("valdheim_email", email); } catch (err) {}
-        msg.className = "msg ok"; msg.textContent = ruta === "/registro" ? "Account created. Welcome to Valdheim!" : "Welcome back!";
+        decir("Welcome back!", "ok");
         mostrar(res.j);
         sesion = { email: email, password: password };
         cargarReferidos();
       })
-      .catch(function(){ b1.disabled = false; b2.disabled = false; msg.className = "msg err"; msg.textContent = "Could not reach the realm. Check your connection and try again."; });
+      .catch(sinConexion);
+  }
+  // Registro en tres pasos: código al correo, verificarlo y fijar la
+  // contraseña. Al terminar, el enlace de referido aparece en el panel
+  // de referidos y también llega al correo.
+  var pasoCrear = 0, tokenRegistroWeb = null;
+  function reiniciarCrear(){
+    pasoCrear = 0; tokenRegistroWeb = null;
+    document.getElementById("pasoCodigo").style.display = "none";
+    document.getElementById("btnClave").style.display = "none";
+    document.getElementById("btnCrear").style.display = "block";
+  }
+  function crearPaso1(){
+    var email = correoDelForm();
+    if (!email) { decir("Write your email first.", "err"); return; }
+    decir("Sending your code…", "");
+    ocupados(true);
+    post("/registro/codigo", { email: email })
+      .then(function(res){
+        ocupados(false);
+        if (!res.ok) { decir(errorTexto(res.j && res.j.error), "err"); return; }
+        pasoCrear = 1;
+        document.getElementById("pasoCodigo").style.display = "block";
+        document.getElementById("btnCrear").style.display = "none";
+        decir("Code sent — check your email and type the 6 digits below. It lasts 15 minutes.", "ok");
+        document.getElementById("codigo").focus();
+      })
+      .catch(sinConexion);
+  }
+  function crearPaso2(){
+    var email = correoDelForm();
+    var codigo = document.getElementById("codigo").value.trim();
+    if (!/^\d{6}$/.test(codigo)) { decir("Type the 6-digit code from your email.", "err"); return; }
+    decir("Checking your code…", "");
+    ocupados(true);
+    post("/registro/verificar", { email: email, codigo: codigo })
+      .then(function(res){
+        ocupados(false);
+        if (!res.ok) { decir(errorTexto(res.j && res.j.error), "err"); return; }
+        if (!res.j.token) { decir("This account already has a password — use “Sign in”.", "err"); return; }
+        tokenRegistroWeb = res.j.token;
+        pasoCrear = 2;
+        document.getElementById("pasoCodigo").style.display = "none";
+        document.getElementById("btnClave").style.display = "block";
+        decir("Email verified! Now write your password above (twice) and finish.", "ok");
+        document.getElementById("password").focus();
+      })
+      .catch(sinConexion);
+  }
+  function crearPaso3(){
+    var email = correoDelForm();
+    var password = document.getElementById("password").value;
+    if (!tokenRegistroWeb) { decir("That step expired — start the registration again.", "err"); reiniciarCrear(); return; }
+    if (!password || password.length < 6) { decir("The password needs at least 6 characters.", "err"); return; }
+    if (password !== document.getElementById("password2").value) { decir("The two passwords do not match — type the same one twice.", "err"); return; }
+    decir("Creating your account…", "");
+    ocupados(true);
+    post("/registro/contrasena", { email: email, token: tokenRegistroWeb, password: password, referido: refGuardado() })
+      .then(function(res){
+        ocupados(false);
+        if (!res.ok) {
+          var e = res.j && res.j.error;
+          decir(errorTexto(e), "err");
+          if (e === "token_invalido" || e === "token_expirado" || e === "cuenta_ya_tiene_contrasena") reiniciarCrear();
+          return;
+        }
+        try { localStorage.setItem("valdheim_email", email); } catch (err) {}
+        decir("Account created — welcome to Valdheim! Your referral link is below, and we emailed it to you too. When you enter the game on this device, we will ask if you want to link the device to your account.", "ok");
+        mostrar(res.j);
+        sesion = { email: email, password: password };
+        cargarReferidos();
+        reiniciarCrear();
+      })
+      .catch(sinConexion);
   }
   var sesion = null;
   function dinero(n){ return "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
@@ -241,8 +346,16 @@
     document.getElementById("refMsg").className = "msg ok";
     document.getElementById("refMsg").textContent = "Link copied — share it with your clan!";
   });
-  document.getElementById("form").addEventListener("submit", function(ev){ ev.preventDefault(); enviar("/registro"); });
-  document.getElementById("btnEntrar").addEventListener("click", function(){ enviar("/login"); });
+  document.getElementById("form").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    if (pasoCrear === 1) crearPaso2();
+    else if (pasoCrear === 2) crearPaso3();
+    else crearPaso1();
+  });
+  document.getElementById("btnEntrar").addEventListener("click", entrar);
+  document.getElementById("btnVerificar").addEventListener("click", crearPaso2);
+  document.getElementById("btnReenviar").addEventListener("click", crearPaso1);
+  document.getElementById("btnClave").addEventListener("click", crearPaso3);
   try {
     var guardado = localStorage.getItem("valdheim_email");
     if (guardado) document.getElementById("email").value = guardado;
