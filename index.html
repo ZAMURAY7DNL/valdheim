@@ -1178,7 +1178,10 @@ if(w.ResizeObserver) new ResizeObserver(debounce(measure,150)).observe(d.body);
     if(!D) return;
     if(d <= 0){
       D.textContent='0'; H.textContent='00'; M.textContent='00'; S.textContent='00';
-      var t=document.querySelector('.cd-t'); if(t) t.textContent='The demo is launching — stay tuned';
+      var t=document.querySelector('.cd-t');
+      if(t){ t.textContent='\uD83D\uDD25 Calentando motores'; t.style.fontSize='24px'; t.style.letterSpacing='.06em'; }
+      var nums=document.querySelector('.cd-nums'); if(nums) nums.style.display='none';
+      var f=document.querySelector('.cd-f'); if(f){ f.textContent='En breve abre la demo \u00B7 The demo opens shortly'; f.style.fontSize='16px'; f.style.opacity='1'; }
       return;
     }
     D.textContent = Math.floor(d/86400000);
