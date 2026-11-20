@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "_comentario": "Una escala por general: multiplica TODAS sus animaciones por igual (quieto, caminar y ataque miden lo mismo). 1 = tamano original del arte. Ajustable con la herramienta de escalas del dueno.",
+  "escalas": {
+    "general_arqueros": 1.03,
+    "general_escuderos": 1,
+    "general_lanceros": 1.49,
+    "general_adaptable": 1.62
+  }
+}
