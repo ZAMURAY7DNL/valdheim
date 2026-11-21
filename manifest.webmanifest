@@ -3,7 +3,7 @@
   "short_name": "VALDHEIM",
   "description": "Valdheim: Clans of the North — a Viking multiplayer strategy game in development.",
   "lang": "en",
-  "start_url": ".",
+  "start_url": "jugar/",
   "scope": ".",
   "display": "standalone",
   "background_color": "#0b1220",
