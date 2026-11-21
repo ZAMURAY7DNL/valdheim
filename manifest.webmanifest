@@ -1,0 +1,16 @@
+{
+  "name": "VALDHEIM: Clans of the North",
+  "short_name": "VALDHEIM",
+  "description": "Valdheim: Clans of the North — a Viking multiplayer strategy game in development.",
+  "lang": "en",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    { "src": "favicon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "favicon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
