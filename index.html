@@ -840,7 +840,7 @@ function paint(it,p){
   st.rotate=(k*it.r).toFixed(2)+'deg';
   st.scale=(it.s+(1-it.s)*e).toFixed(4);
   st.opacity=Math.min(1,e*1.25).toFixed(3);
-  if(it.bl) st.filter=p>=1?'none':'blur('+(k*it.bl).toFixed(2)+'px)';
+  st.filter='none';
   if(it.clip) st.clipPath=p>=1?'none':(it.clip==='u'
       ?'inset('+(k*100).toFixed(2)+'% 0 0 0 round 16px)'
       :'inset(0 '+(k*100).toFixed(2)+'% 0 0 round 16px)');
