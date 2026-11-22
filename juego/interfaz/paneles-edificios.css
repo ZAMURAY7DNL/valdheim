@@ -1,0 +1,1250 @@
+/* VALDHEIM · Piel de paneles de edificios (menu junto al edificio, ficha y
+   construccion), fiel a la maqueta build-ui: marco de esquinas recortadas
+   con filo de tema y linea de brillo superior, cabecera con titulo runico,
+   descripcion en cursiva y botones-barra (azul / dorado) SOLO con su
+   etiqueta, sin textos chicos ni tarjetas anidadas.
+   Solo capa visual: no cambia catalogo, economia, colas ni ordenes.
+   Reglas de la casa respetadas:
+   - El menu (#menuEdificio) NO recibe display: manda
+     .menu-edificio[hidden]{display:none} y se abre/cierra con hidden.
+   - Fondos/bordes forzados con !important solo donde los temas de la
+     casa (v/mq) tambien fuerzan los suyos.
+   - La ficha no cambia geometria (ni inset ni alturas): solo pinta,
+     salvo su z-index (es modal y va sobre la barra superior). */
+
+:root {
+  --ed-noche: #060c19;
+  --ed-panel: #10243f;
+  --ed-hielo: #5fd6ff;
+  --ed-hielo-osc: #1c6f94;
+  --ed-oro: #d9a441;
+  --ed-oro-osc: #8a6618;
+  --ed-oro-claro: #ffe2a0;
+  --ed-niebla: #a9bdd0;
+  --ed-tinta: #e8f1f8;
+  --ed-tit: Cinzel, "Palatino Linotype", Georgia, serif;
+}
+
+/* ============ MENU FLOTANTE DEL EDIFICIO (maqueta build-ui) ============ */
+/* Sin panel: la placa .bn cuelga SOBRE el edificio y los botones .rb
+   flotan BAJO el. El envoltorio es un punto 0x0 que
+   posicionarMenuEdificio ancla a la parte alta de la parcela;
+   --alto-parcela dice cuanto mide el edificio en el lienzo. */
+#menuEdificio.menu-edificio {
+  position: absolute;
+  z-index: 140;
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible;
+  pointer-events: none;
+}
+#menuEdificio.menu-edificio[hidden] { display: none; }
+/* Edificio fuera de la vista: el menu se oculta sin cerrarse. */
+#menuEdificio.fuera-vista { visibility: hidden; }
+#menuEdificio .bn {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--tam-boton, 104px) * .12);
+  transform: translateX(-50%);
+  display: flex;
+  gap: calc(var(--tam-boton, 104px) * .13);
+  align-items: baseline;
+  padding: calc(var(--tam-boton, 104px) * .11) calc(var(--tam-boton, 104px) * .46);
+  white-space: nowrap;
+  pointer-events: auto;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: calc(var(--tam-boton, 104px) * .3);
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .65);
+  background: linear-gradient(#17456a, #0d2a47);
+  box-shadow: inset 0 0 0 3px var(--ed-hielo-osc), 0 12px 26px rgba(0, 0, 0, .45);
+  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0 50%);
+}
+#menuEdificio .bn em {
+  font: 700 calc(var(--tam-boton, 104px) * .22) Georgia, serif;
+  font-style: normal;
+  color: var(--ed-oro);
+}
+#menuEdificio .menu-edificio-flotante {
+  position: absolute;
+  left: 0;
+  top: calc(var(--alto-parcela, 120px) - var(--tam-boton, 104px) * .42);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--tam-boton, 104px) * .13);
+  pointer-events: none;
+}
+#menuEdificio.invertido .bn {
+  bottom: auto;
+  top: calc(var(--alto-parcela, 120px) + var(--tam-boton, 104px) * .13);
+}
+#menuEdificio.invertido .menu-edificio-flotante {
+  top: auto;
+  bottom: calc(var(--tam-boton, 104px) * -.28);
+}
+#menuEdificioAcciones.rbs {
+  display: flex;
+  gap: calc(var(--tam-boton, 104px) * .34);
+  pointer-events: none;
+}
+#menuEdificio .accion-edificio {
+  --c: #2a79b5;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  cursor: pointer;
+  pointer-events: auto;
+  font: 700 24px Georgia, serif;
+  color: #fff;
+  text-shadow: 0 2px 6px #000;
+  animation: ed-rb-in .42s cubic-bezier(.2, .9, .3, 1) backwards;
+}
+#menuEdificio .accion-edificio:nth-child(2) { animation-delay: .06s; }
+#menuEdificio .accion-edificio:nth-child(3) { animation-delay: .12s; }
+#menuEdificio .accion-edificio:nth-child(4) { animation-delay: .18s; }
+#menuEdificio .accion-edificio[data-accion="mejorar"] { --c: #1f9a6a; }
+#menuEdificio .accion-edificio[data-accion="acelerar"] { --c: #c8921f; }
+#menuEdificio .accion-edificio[data-accion="entrenar"],
+#menuEdificio .accion-edificio[data-accion="curar"],
+#menuEdificio .accion-edificio[data-accion="recoger"] { --c: #a8412c; }
+#menuEdificio .accion-edificio-icono {
+  width: var(--tam-boton, 104px);
+  height: var(--tam-boton, 104px);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 calc(var(--tam-boton, 104px) * .46) Georgia, serif;
+  font-style: normal;
+  color: #fff;
+  background: var(--c);
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--c) 68%, #ffffff 22%), var(--c));
+  border: calc(var(--tam-boton, 104px) * .05) solid rgba(2, 8, 16, .55);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .22), 0 14px 26px rgba(0, 0, 0, .5);
+  transition: filter .15s ease, transform .15s ease;
+}
+#menuEdificio .accion-edificio-icono::before,
+#menuEdificio .accion-edificio-icono::after { content: none; }
+#menuEdificio .accion-edificio:hover .accion-edificio-icono { filter: brightness(1.2); }
+#menuEdificio .accion-edificio:active .accion-edificio-icono { transform: scale(.94); }
+#menuEdificio .accion-edificio:focus-visible { outline: 3px solid var(--ed-hielo); outline-offset: 4px; }
+#menuEdificio .accion-edificio-texto { display: none !important; }
+#menuEdificio .accion-edificio {
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0;
+}
+#menuEdificio .accion-edificio-texto strong { font: inherit; }
+#menuEdificio .menu-edificio-estado {
+  pointer-events: auto;
+  max-width: 560px;
+  padding: calc(var(--tam-boton, 104px) * .09) calc(var(--tam-boton, 104px) * .26);
+  text-align: center;
+  font: calc(var(--tam-boton, 104px) * .22) Georgia, serif;
+  color: #ffe9b0;
+  background: rgba(6, 12, 25, .85);
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+}
+#menuEdificio .menu-edificio-estado:empty { display: none; }
+#menuEdificio .menu-edificio-estado.estado-enlace {
+  cursor: pointer;
+  color: var(--ed-oro-claro);
+  text-decoration: underline;
+}
+@keyframes ed-rb-in {
+  from { opacity: 0; transform: translateY(16px) scale(.85); }
+  to { opacity: 1; transform: none; }
+}
+
+
+/* La hoja base del visor oculta el estado y la etiqueta de los botones
+   (regla pensada para solo-lectura de pantalla); en el menu flotante
+   de la maqueta SI se ven. */
+#menuEdificio .menu-edificio-estado,
+#menuEdificio .accion-edificio-texto {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ============ VENTANA DEL EDIFICIO (maqueta build-ui) ============ */
+/* La ventana del documento: ocupa casi toda la pantalla sobre un velo,
+   marco con el color de tema del edificio y esquinas recortadas,
+   cabecera con titulo runico, y el cuerpo en dos columnas: el arte
+   grande con su anillo de runas a la izquierda y los datos a la
+   derecha. Los temas llegan por data-tema (salon/herreria = oro,
+   cuartel = brasa, enfermeria = verde; el resto, hielo). */
+#panelEdificio {
+  z-index: 130;
+  --tema: #5fd6ff;
+  --tema2: #1c6f94;
+  background: rgba(6, 12, 25, .78) !important;
+  position: fixed !important;
+  inset: 0 !important;
+  backdrop-filter: none;
+  padding: 30px 44px;
+}
+#panelEdificio[data-tema="oro"] { --tema: #d9a441; --tema2: #8a6618; }
+#panelEdificio[data-tema="brasa"] { --tema: #e07840; --tema2: #8c3a1c; }
+#panelEdificio[data-tema="verde"] { --tema: #4fc38a; --tema2: #2f7a55; }
+#panelEdificio [hidden] { display: none !important; }
+#panelEdificio .panel-edificio-marco {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(#12283f, #0a172b) !important;
+  box-shadow: inset 0 0 0 3px var(--tema2), 0 30px 80px rgba(0, 0, 0, .6);
+  clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px);
+  color: var(--ed-tinta);
+  animation: ed-pop .22s cubic-bezier(.2, .9, .3, 1);
+}
+#panelEdificio .panel-edificio-marco::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 4%;
+  right: 4%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .5), transparent);
+  pointer-events: none;
+}
+@keyframes ed-pop {
+  from { opacity: 0; transform: scale(.965) translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+/* Cabecera (.mh del documento) */
+#panelEdificio .panel-edificio-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 0;
+  padding: 12px 36px;
+  background: linear-gradient(#1a2f47, #101f33);
+  border-bottom: 2px solid var(--tema2);
+  color: #fff;
+}
+#panelEdificio .panel-edificio-volver,
+#panelEdificio .panel-edificio-cerrar {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  font: 700 32px Georgia, serif;
+  color: #fff;
+  background: linear-gradient(#17456a, #0d2a47);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  cursor: pointer;
+}
+#panelEdificio .panel-edificio-volver:hover,
+#panelEdificio .panel-edificio-cerrar:hover { filter: brightness(1.25); }
+#panelEdificio .panel-edificio-titulo { flex: 1; min-width: 0; }
+#panelEdificio .panel-edificio-cabecera .sobrelinea {
+  font: 700 19px Georgia, serif;
+  letter-spacing: 3px;
+  color: var(--tema);
+}
+#panelEdificio .panel-edificio-cabecera h3 {
+  margin: 2px 0 0;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+}
+#panelEdificio .parcela-nivel {
+  position: static;
+  flex: none;
+  margin: 0;
+  padding: 10px 22px;
+  font: 700 24px Georgia, serif;
+  color: var(--ed-oro-claro);
+  background: rgba(6, 12, 25, .55);
+  box-shadow: inset 0 0 0 2px var(--tema2);
+}
+/* Cuerpo (.mb): arte | datos */
+#panelEdificio .panel-edificio-contenido {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 40px;
+  padding: 24px 44px 28px;
+  min-height: 0;
+}
+#panelEdificio .panel-edificio-escena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: transparent !important;
+  border: 0;
+  box-shadow: none;
+  min-height: 0;
+}
+#panelEdificio .panel-edificio-escena::before,
+#panelEdificio .panel-edificio-escena::after { display: none; }
+#panelEdificio .edificio-figura-grande {
+  position: relative;
+  width: min(600px, 100%);
+  background: none;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+#panelEdificio .edificio-figura-grande::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: -14%;
+  height: auto;
+  clip-path: none;
+  background: url("anillo-runas.svg") center / contain no-repeat;
+  z-index: 0;
+  opacity: .9;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .5));
+  animation: ed-girar 70s linear infinite;
+  pointer-events: none;
+}
+@keyframes ed-girar { to { transform: rotate(360deg); } }
+#panelEdificio .edificio-figura-grande img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .55));
+}
+#panelEdificio .edificio-figura-grande .rn {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  z-index: 3;
+  padding: 8px 16px;
+  font: 700 23px Georgia, serif;
+  font-style: normal;
+  color: var(--tema);
+  background: rgba(6, 12, 25, .6);
+  text-shadow: 0 2px 6px #000;
+}
+#panelEdificio .panel-edificio-escena-etiqueta {
+  padding: 10px 30px;
+  font: 700 24px Georgia, serif;
+  letter-spacing: 2px;
+  color: var(--ed-oro-claro);
+  background: linear-gradient(#17456a, #0d2a47);
+  box-shadow: inset 0 0 0 2px var(--tema2);
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+}
+#panelEdificio .panel-edificio-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 10px;
+  padding-bottom: 14px;
+}
+#panelEdificio .panel-edificio-descripcion {
+  margin: 0;
+  font: italic 25px Georgia, serif;
+  line-height: 1.45;
+  color: var(--ed-niebla);
+}
+#panelEdificio .ficha-vista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+#panelEdificio .ficha-vista .panel-edificio-acciones { margin-top: auto; }
+#panelEdificio .unidad-entrenar { flex: 1; }
+#panelEdificio .entrenar-costos { flex: 1; align-items: center; }
+/* Vista Mejora: comparacion de niveles, costos, requisito, cinta */
+#panelEdificio .comparacion-niveles {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 34px;
+}
+#panelEdificio .comparacion-niveles::after {
+  content: "➜";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 42px;
+  color: #35d99a;
+  text-shadow: 0 2px 8px #000;
+}
+#panelEdificio .nivel-resumen {
+  padding: 12px 20px;
+  background: rgba(95, 214, 255, .07);
+  box-shadow: inset 0 0 0 2px rgba(95, 214, 255, .14);
+}
+#panelEdificio .nivel-resumen-titulo {
+  font: 700 19px Georgia, serif;
+  letter-spacing: 2.5px;
+  color: var(--tema);
+}
+#panelEdificio .nivel-resumen-valor {
+  margin-top: 4px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 34px;
+  color: #fff;
+}
+#panelEdificio .nivel-resumen-detalle {
+  margin-top: 4px;
+  font: 25px Georgia, serif;
+  line-height: 1.35;
+  color: var(--ed-niebla);
+}
+#panelEdificio .ficha-costos-titulo {
+  margin-bottom: 10px;
+  font: 700 20px Georgia, serif;
+  letter-spacing: 2.5px;
+  color: var(--tema);
+}
+#panelEdificio .panel-edificio-costos {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 10px;
+  background: linear-gradient(90deg, transparent, #14283f, transparent);
+}
+#panelEdificio .recurso-costo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 700 34px Georgia, serif;
+  color: #fff;
+}
+#panelEdificio .recurso-costo.insuficiente { color: #ff6b6b; }
+#panelEdificio .ficha-requisito {
+  padding: 14px 22px;
+  text-align: center;
+  font: 27px Georgia, serif;
+  line-height: 1.4;
+  color: #ffb3b3;
+  background: linear-gradient(#262e38, #171d25);
+  clip-path: polygon(0 10px, 3% 0, 97% 6px, 100% 0, 100% calc(100% - 8px), 96% 100%, 3% calc(100% - 6px), 0 100%);
+}
+#panelEdificio .enlace-requisito {
+  margin: 0 6px;
+  padding: 10px 28px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 25px;
+  color: #fff;
+  background: linear-gradient(#2a79b5, #17456a);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  cursor: pointer;
+}
+#panelEdificio .enlace-requisito:hover { filter: brightness(1.2); }
+#panelEdificio .panel-edificio-cuenta {
+  padding: 10px 36px;
+  text-align: center;
+  font: 28px Georgia, serif;
+  color: #2a1c05;
+  background: linear-gradient(90deg, #c9a85c, #e8d49a, #c9a85c);
+  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 22px 100%, 0 50%);
+}
+#panelEdificio .panel-edificio-cuenta:empty { display: none; }
+#panelEdificio .ficha-runas-estimadas {
+  margin: -8px 0 0;
+  text-align: center;
+  font: italic 23px Georgia, serif;
+  color: var(--ed-oro-claro);
+}
+#panelEdificio .ficha-progreso {
+  height: 22px;
+  background: var(--ed-noche);
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+}
+#panelEdificio .ficha-progreso > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #8a6618, var(--ed-oro));
+  transition: width .5s ease;
+}
+#panelEdificio .panel-edificio-acciones {
+  display: flex;
+  gap: 22px;
+}
+#panelEdificio .panel-edificio-acciones > button,
+#panelEdificio .ficha-vista .panel-edificio-acciones > button {
+  flex: 1;
+  padding: 14px 16px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 32px;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+  background: linear-gradient(#2a79b5, #17456a) !important;
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0 50%);
+  cursor: pointer;
+}
+#panelEdificio .panel-edificio-acciones > button.acelerar {
+  background: linear-gradient(#d9a441, #8a6618) !important;
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+  color: #fff !important;
+}
+#panelEdificio .panel-edificio-acciones > button:hover:not(:disabled) { filter: brightness(1.18); }
+#panelEdificio .panel-edificio-acciones > button:disabled {
+  filter: grayscale(.35) brightness(.72);
+  cursor: default;
+}
+/* Secciones propias de un edificio (produccion, cuervos, investigacion) */
+#panelEdificio .panel-edificio-seccion-titulo {
+  padding: 10px;
+  text-align: center;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 29px;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(90deg, transparent, #2a3f57, transparent);
+}
+#panelEdificio #fichaProduccion,
+#panelEdificio #fichaCuervos,
+#panelEdificio #fichaInvestigacion,
+#panelEdificio #fichaCuracion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#panelEdificio #fichaInvestigacionLista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#panelEdificio #fichaInvestigacionLista > div,
+#panelEdificio .investigacion-fila {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 20px;
+  background: rgba(95, 214, 255, .07);
+  box-shadow: inset 0 0 0 2px rgba(95, 214, 255, .12);
+  font: 25px Georgia, serif;
+  color: var(--ed-niebla);
+}
+#panelEdificio #fichaInvestigacionLista > div {
+  flex-direction: column;
+  align-items: stretch;
+}
+#panelEdificio .investigacion-fila > div { flex: 1; }
+#panelEdificio #fichaInvestigacionLista button,
+#panelEdificio .investigacion-fila button {
+  align-self: flex-end;
+  padding: 12px 32px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 25px;
+  color: #fff;
+  background: linear-gradient(#2a79b5, #17456a);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  cursor: pointer;
+}
+#panelEdificio .investigacion-fila button { align-self: center; }
+#panelEdificio #fichaInvestigacionLista button:disabled,
+#panelEdificio .investigacion-fila button:disabled {
+  filter: grayscale(.35) brightness(.72);
+  cursor: default;
+}
+/* Vista Informacion: la tabla de niveles como filas del documento */
+#panelEdificio #fichaInfoVista table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 24px Georgia, serif;
+}
+#panelEdificio #fichaInfoVista th {
+  padding: 12px 14px;
+  text-align: left;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 23px;
+  color: #fff;
+  background: #2a3f57;
+}
+#panelEdificio #fichaInfoVista td {
+  padding: 10px 14px;
+  color: var(--ed-niebla);
+  vertical-align: top;
+}
+#panelEdificio #fichaInfoVista tbody tr:nth-child(even) { background: rgba(95, 214, 255, .07); }
+#panelEdificio #fichaInfoVista tbody tr.nivel-actual {
+  background: rgba(217, 164, 65, .16);
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+}
+#panelEdificio #fichaInfoVista tbody tr.nivel-actual td { color: #fff; font-weight: 700; }
+/* Vista Entrenar: tarjetas de tropa como filas del documento */
+#panelEdificio .panel-edificio-tropas {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#panelEdificio .unidad-edificio {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 20px;
+  background: linear-gradient(#17456a, #0d2a47);
+  box-shadow: inset 0 0 0 3px var(--ed-hielo-osc);
+}
+#panelEdificio .unidad-edificio-emblema {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 44px;
+  color: #fff;
+  background: radial-gradient(circle at 50% 30%, #3d5a76, #14283f);
+  box-shadow: inset 0 0 0 3px var(--ed-oro-osc);
+}
+#panelEdificio .unidad-edificio-info { flex: 1; min-width: 0; }
+#panelEdificio .unidad-edificio-nombre {
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 31px;
+  color: #fff;
+}
+#panelEdificio .unidad-edificio-detalle {
+  margin-top: 4px;
+  font: 24px Georgia, serif;
+  line-height: 1.35;
+  color: var(--ed-niebla);
+}
+#panelEdificio .unidad-edificio > button {
+  flex: none;
+  padding: 16px 30px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 26px;
+  color: #fff;
+  background: linear-gradient(#2a79b5, #17456a);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  cursor: pointer;
+}
+#panelEdificio .unidad-edificio > button.acelerar {
+  background: linear-gradient(#d9a441, #8a6618);
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+}
+#panelEdificio .unidad-edificio > button:disabled {
+  filter: grayscale(.35) brightness(.72);
+  cursor: default;
+}
+/* Vista Curar: cola y lista de heridos */
+#panelEdificio #fichaCuracionCola {
+  padding: 12px 30px;
+  text-align: center;
+  font: 26px Georgia, serif;
+  color: #2a1c05;
+  background: linear-gradient(90deg, #c9a85c, #e8d49a, #c9a85c);
+  clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 18px 100%, 0 50%);
+}
+#panelEdificio #fichaCuracionCola:empty { display: none; }
+#panelEdificio #fichaCuracionLista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#panelEdificio #fichaCuracionAcelerar {
+  align-self: flex-end;
+  padding: 14px 34px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 26px;
+  color: #fff;
+  background: linear-gradient(#d9a441, #8a6618);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+  cursor: pointer;
+}
+
+#panelEdificio #fichaEdificioTropas {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ============ ENTRENAR (panel del ejemplo) ============ */
+/* La escena muestra la tropa elegida: medallon grande con su inicial
+   y el anillo de runas detras; la vista trae selector, filas de datos,
+   deslizador de cantidad, costos, cinta de tiempo y botones. */
+#panelEdificio .edificio-figura-grande { display: grid; place-items: center; }
+#panelEdificio .ficha-tropa-medallon {
+  position: relative;
+  z-index: 1;
+  width: min(320px, 78%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 128px;
+  color: #fff;
+  background: radial-gradient(circle at 50% 30%, #3d5a76, #14283f);
+  box-shadow: inset 0 0 0 5px var(--ed-oro-osc), 0 18px 22px rgba(0, 0, 0, .55);
+}
+#panelEdificio .tropas-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+#panelEdificio .tropa-chip {
+  padding: 12px 26px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 25px;
+  color: var(--ed-niebla);
+  background: linear-gradient(#17456a, #0d2a47);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  cursor: pointer;
+}
+#panelEdificio .tropa-chip.on {
+  color: #fff;
+  box-shadow: inset 0 0 0 3px var(--ed-oro);
+}
+#panelEdificio .unidad-entrenar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#panelEdificio .entrenar-filas {
+  display: flex;
+  flex-direction: column;
+}
+#panelEdificio .entrenar-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 20px;
+  font: 26px Georgia, serif;
+  color: var(--ed-niebla);
+}
+#panelEdificio .entrenar-fila:nth-child(even) { background: rgba(95, 214, 255, .07); }
+#panelEdificio .entrenar-fila b { font-size: 28px; color: #fff; }
+#panelEdificio .entrenar-deslizador {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 6px 4px;
+}
+#panelEdificio .entrenar-deslizador > span {
+  font: 700 24px Georgia, serif;
+  letter-spacing: 1px;
+  color: var(--tema);
+}
+#panelEdificio .entrenar-rango {
+  flex: 1;
+  height: 34px;
+  accent-color: var(--ed-oro);
+  cursor: pointer;
+}
+#panelEdificio .entrenar-numero {
+  width: 118px;
+  padding: 10px 12px;
+  font: 700 26px Georgia, serif;
+  text-align: center;
+  color: #fff;
+  background: var(--ed-noche);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+}
+#panelEdificio .entrenar-costos {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 10px;
+  background: linear-gradient(90deg, transparent, #14283f, transparent);
+}
+#panelEdificio .entrenar-cinta {
+  padding: 12px 36px;
+  text-align: center;
+  font: 26px Georgia, serif;
+  color: #2a1c05;
+  background: linear-gradient(90deg, #c9a85c, #e8d49a, #c9a85c);
+  clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0 50%);
+}
+#panelEdificio .entrenar-nota {
+  padding: 14px 22px;
+  text-align: center;
+  font: 25px Georgia, serif;
+  line-height: 1.4;
+  color: #ffb3b3;
+  background: linear-gradient(#262e38, #171d25);
+}
+#panelEdificio .entrenar-botones { display: flex; gap: 20px; }
+#panelEdificio .entrenar-botones > button {
+  flex: 1;
+  padding: 16px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 29px;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+  background: linear-gradient(#2a79b5, #17456a);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0 50%);
+  cursor: pointer;
+}
+#panelEdificio .entrenar-botones > button.entrenar-acelerar {
+  background: linear-gradient(#d9a441, #8a6618);
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+}
+#panelEdificio .entrenar-botones > button:hover:not(:disabled) { filter: brightness(1.18); }
+#panelEdificio .entrenar-botones > button:disabled {
+  filter: grayscale(.35) brightness(.72);
+  cursor: default;
+}
+
+/* ============ RONDA 3: colores del ejemplo, sin paneles viejos ============ */
+/* Los temas de la casa pintaban burdeos tras la columna de datos,
+   las tropas y los costos: aqui manda el fondo plano del ejemplo. */
+#panelEdificio .panel-edificio-contenido { background: transparent; }
+#panelEdificio .panel-edificio-info {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+#panelEdificio #fichaEdificioTropas {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+#panelEdificio .panel-edificio-costos {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+/* Cajas de nivel minimas: Nivel X -> Nivel Y y nada mas. */
+#panelEdificio .nivel-resumen-detalle { display: none; }
+#panelEdificio .nivel-resumen { padding: 10px 16px; }
+#panelEdificio .nivel-resumen-titulo { font-size: 16px; }
+#panelEdificio .nivel-resumen-valor { font-size: 30px; }
+/* Requisito del ejemplo: miniatura, nombre y nivel, y el boton Ir. */
+#panelEdificio .ficha-requisito {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 20px;
+  text-align: left;
+  background: #0d2038;
+  box-shadow: inset 0 0 0 2px var(--tema2);
+}
+#panelEdificio .requisito-mini {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  flex: none;
+}
+#panelEdificio .requisito-texto {
+  flex: 1;
+  font: 26px Georgia, serif;
+  color: #fff;
+}
+#panelEdificio .requisito-ir {
+  flex: none;
+  padding: 12px 30px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+  background: linear-gradient(#d9a441, #8a6618);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+  cursor: pointer;
+}
+#panelEdificio .requisito-ir:hover { filter: brightness(1.15); }
+/* La barra de cantidad del ejemplo: pista dorada con relleno y pomo. */
+#panelEdificio .entrenar-rango {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #d9a441 var(--relleno, 100%), #0d2038 var(--relleno, 100%));
+  box-shadow: inset 0 0 0 2px #7c5a14;
+  outline: none;
+}
+#panelEdificio .entrenar-rango::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #c8921f);
+  box-shadow: 0 0 0 3px #7c5a14, 0 4px 8px rgba(0, 0, 0, .5);
+  cursor: pointer;
+}
+#panelEdificio .entrenar-rango::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #c8921f);
+  box-shadow: 0 0 0 3px #7c5a14, 0 4px 8px rgba(0, 0, 0, .5);
+  cursor: pointer;
+}
+
+/* ============ COLA DE ACELERACION (maqueta build-ui) ============ */
+/* La ventana de Acelerar: a la izquierda, las colas reales del jugador
+   (construccion, investigacion, entrenamiento, curar); a la derecha,
+   los aceleradores que se pueden gastar en la cola elegida. */
+#panelColas {
+  position: absolute;
+  inset: 64px 0 0;
+  z-index: 130;
+  display: grid;
+  place-items: center;
+  padding: 30px 44px;
+  background: rgba(6, 12, 25, .78);
+}
+#panelColas[hidden] { display: none !important; }
+#panelColas .panel-colas-marco {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+  background: linear-gradient(#12283f, #0a172b);
+  box-shadow: inset 0 0 0 3px var(--ed-hielo-osc), 0 30px 80px rgba(0, 0, 0, .6);
+  clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px);
+  color: var(--ed-tinta);
+  animation: ed-pop .22s cubic-bezier(.2, .9, .3, 1);
+}
+#panelColas .panel-colas-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 40px;
+  background: linear-gradient(#1a2f47, #101f33);
+  border-bottom: 2px solid var(--ed-hielo-osc);
+  color: #fff;
+}
+#panelColas .panel-colas-i {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  font: italic 700 36px Georgia, serif;
+  color: #fff;
+  background: linear-gradient(#2a79b5, #17456a);
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+#panelColas .panel-colas-cabecera h3 {
+  flex: 1;
+  margin: 0;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 46px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+#panelColas .panel-colas-cerrar {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  font: 700 34px Georgia, serif;
+  color: #fff;
+  background: linear-gradient(#17456a, #0d2a47);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  cursor: pointer;
+}
+#panelColas .panel-colas-cerrar:hover { filter: brightness(1.25); }
+#panelColas .panel-colas-cuerpo {
+  display: grid;
+  grid-template-columns: .9fr 1.3fr;
+  gap: 36px;
+  padding: 30px 44px 36px;
+  min-height: 0;
+}
+#panelColas .panel-colas-lista,
+#panelColas .panel-colas-detalle {
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+#panelColas .panel-colas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#panelColas .qg {
+  padding: 10px;
+  text-align: center;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(90deg, transparent, #2a3f57, transparent);
+}
+#panelColas .qi {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 20px;
+  background: linear-gradient(#17456a, #0d2a47);
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  cursor: pointer;
+}
+#panelColas .qi > u {
+  flex: none;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  font-size: 32px;
+  color: #fff;
+  background: radial-gradient(circle at 50% 30%, #3d5a76, #14283f);
+  box-shadow: inset 0 0 0 3px var(--ed-oro-osc);
+}
+#panelColas .qi > div { flex: 1; min-width: 0; }
+#panelColas .qi b {
+  display: block;
+  font: 700 30px Georgia, serif;
+  color: #fff;
+}
+#panelColas .qi .qt {
+  display: block;
+  margin-top: 2px;
+  font: 23px Georgia, serif;
+  color: #35d99a;
+}
+#panelColas .qi .qb {
+  display: block;
+  height: 14px;
+  margin-top: 10px;
+  background: var(--ed-noche);
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+}
+#panelColas .qi .qb > s {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  background: linear-gradient(90deg, #8a6618, var(--ed-oro));
+}
+#panelColas .qi.on { box-shadow: inset 0 0 0 4px var(--ed-oro); }
+#panelColas .qi.lk { opacity: .55; }
+#panelColas .qi.rojo { animation: ed-sacude .3s; }
+@keyframes ed-sacude {
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+#panelColas .panel-colas-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#panelColas .qh {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 22px;
+  background: rgba(95, 214, 255, .07);
+  box-shadow: inset 0 0 0 2px rgba(95, 214, 255, .14);
+}
+#panelColas .qh b {
+  flex: 1;
+  font: 700 30px Georgia, serif;
+  color: #fff;
+}
+#panelColas .qh .qtm { font: 26px Georgia, serif; color: var(--ed-niebla); }
+#panelColas .qh .qgo {
+  flex: none;
+  padding: 12px 26px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 24px;
+  color: #fff;
+  background: linear-gradient(#2a79b5, #17456a);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  cursor: pointer;
+}
+#panelColas .qh .qgo:hover { filter: brightness(1.2); }
+#panelColas .dsc {
+  font: italic 27px Georgia, serif;
+  line-height: 1.45;
+  color: var(--ed-niebla);
+}
+#panelColas .sp {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 20px;
+  background: linear-gradient(#17456a, #0d2a47);
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+}
+#panelColas .sp > u {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  font-size: 44px;
+  color: #fff;
+  background: linear-gradient(#2a79b5, #17456a);
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+}
+#panelColas .sp > div { flex: 1; min-width: 0; }
+#panelColas .sp b {
+  display: block;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 29px;
+  color: #fff;
+}
+#panelColas .sp span {
+  display: block;
+  margin-top: 3px;
+  font: 24px Georgia, serif;
+  color: var(--ed-niebla);
+}
+#panelColas .sp em {
+  display: block;
+  margin-top: 5px;
+  font: 700 24px Georgia, serif;
+  font-style: normal;
+  color: var(--ed-oro);
+}
+#panelColas .btns { display: flex; gap: 22px; }
+#panelColas .btn {
+  flex: 1;
+  padding: 20px 16px;
+  font-family: var(--ed-tit);
+  font-weight: 700;
+  font-size: 30px;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+  background: linear-gradient(#2a79b5, #17456a);
+  border: 0;
+  box-shadow: inset 0 0 0 2px var(--ed-hielo-osc);
+  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0 50%);
+  cursor: pointer;
+}
+#panelColas .btn.gold {
+  background: linear-gradient(#d9a441, #8a6618);
+  box-shadow: inset 0 0 0 2px var(--ed-oro-osc);
+}
+#panelColas .btn.us { flex: none; width: 280px; }
+#panelColas .btn:hover:not(:disabled) { filter: brightness(1.18); }
+#panelColas .btn:disabled { filter: grayscale(.65) brightness(.55); cursor: default; }
+
+/* ============ PANEL DE CONSTRUCCION (acentos) ============ */
+#panelConstruccion .tarjeta { border-color: #1c6f9470; }
+#panelConstruccion .tarjeta .halo { opacity: .8; }
+#panelConstruccion .tarjeta .halo::after { border-color: var(--ed-hielo); }
+
+@media (prefers-reduced-motion: reduce) {
+  #menuEdificio *, #panelEdificio *, #panelConstruccion * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* hud-oculto: con un panel de pantalla completa abierto solo
+   quedan los recursos y las runas; todo lo demas desaparece. */
+#pantalla:has(#panelEdificio:not([hidden])) #barra-superior,
+#pantalla:has(#panelColas:not([hidden])) #barra-superior {
+  z-index: 140;
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+#pantalla:has(#panelEdificio:not([hidden])) #barra-superior > button,
+#pantalla:has(#panelColas:not([hidden])) #barra-superior > button,
+#pantalla:has(#panelEdificio:not([hidden])) #acceso,
+#pantalla:has(#panelColas:not([hidden])) #acceso,
+#pantalla:has(#panelEdificio:not([hidden])) .barra-derecha > :not(.recursos),
+#pantalla:has(#panelColas:not([hidden])) .barra-derecha > :not(.recursos),
+#pantalla:has(#panelEdificio:not([hidden])) .hud-inferior-izquierdo,
+#pantalla:has(#panelColas:not([hidden])) .hud-inferior-izquierdo,
+#pantalla:has(#panelEdificio:not([hidden])) #panelChat,
+#pantalla:has(#panelColas:not([hidden])) #panelChat,
+#pantalla:has(#panelEdificio:not([hidden])) #panelRapido,
+#pantalla:has(#panelColas:not([hidden])) #panelRapido,
+#pantalla:has(#panelEdificio:not([hidden])) #panelCapitulos,
+#pantalla:has(#panelColas:not([hidden])) #panelCapitulos,
+#pantalla:has(#panelEdificio:not([hidden])) #panelEventos,
+#pantalla:has(#panelColas:not([hidden])) #panelEventos,
+#pantalla:has(#panelEdificio:not([hidden])) #panelRanuras,
+#pantalla:has(#panelColas:not([hidden])) #panelRanuras {
+  display: none !important;
+}
+
+/* La mejora como en la maqueta: niveles y requisito arriba;
+   costos, tiempo, progreso y acciones anclados abajo. */
+#fichaMejoraVista {
+  display: flex;
+  flex-direction: column;
+}
+#fichaMejoraVista > .comparacion-niveles { order: 1; }
+#fichaMejoraVista > #fichaEdificioRequisito { order: 2; }
+#fichaMejoraVista > section { order: 2; }
+#fichaMejoraVista > div:has(> #fichaEdificioCostos) {
+  order: 3;
+  margin-top: auto;
+}
+#fichaMejoraVista > #fichaEdificioCuenta { order: 4; }
+#fichaMejoraVista > #fichaProgresoObra { order: 5; }
+#fichaMejoraVista > .panel-edificio-acciones { order: 6; }
