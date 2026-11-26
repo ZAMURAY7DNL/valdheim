@@ -1248,3 +1248,98 @@
 #fichaMejoraVista > #fichaEdificioCuenta { order: 4; }
 #fichaMejoraVista > #fichaProgresoObra { order: 5; }
 #fichaMejoraVista > .panel-edificio-acciones { order: 6; }
+
+/* Una unica barra fisica por tarea, anclada a la parcela. Seleccionar
+   solo cambia la visibilidad del contador, nunca su caja ni posicion. */
+#ciudad-isometrica .estado-parcela {
+  position:absolute;top:calc(var(--arte-abajo,100%) + var(--arte-ancho,100px)*.015);
+  bottom:auto;left:50%;right:auto;transform:translateX(-50%);z-index:6;
+  display:grid;gap:calc(var(--arte-ancho,100px)*.025);
+  width:calc(var(--arte-ancho,100px)*.78);min-width:0;max-width:none;
+  padding:0;border:0;border-radius:0;background:none;box-shadow:none;
+  pointer-events:none;
+}
+#ciudad-isometrica .estado-parcela[hidden], .estado-parcela-fila[hidden] {display:none!important}
+.estado-parcela-fila {min-width:0}
+#ciudad-isometrica .estado-parcela-barra {
+  position:relative;display:block;width:100%;height:calc(var(--arte-ancho,100px)*.14);
+  box-sizing:border-box;overflow:hidden;border:calc(var(--arte-ancho,100px)*.009) solid #b99551;
+  border-radius:calc(var(--arte-ancho,100px)*.033);background:#18232d;
+  box-shadow:inset 0 1px 2px #0008;
+}
+#ciudad-isometrica .estado-parcela-progreso {
+  position:absolute;inset:0 auto 0 0;display:block;max-width:100%;height:100%;
+  background:linear-gradient(180deg,#e6c576 0%,#bf913a 100%);transition:none;
+}
+#ciudad-isometrica [data-progreso="entrenamiento"] .estado-parcela-progreso {
+  background:linear-gradient(180deg,#8ac6e3,#467b9c);
+}
+#ciudad-isometrica .estado-parcela-texto {
+  position:absolute;inset:0;display:grid;place-items:center;visibility:hidden;
+  font:700 calc(var(--arte-ancho,100px)*.085)/1 Arial,sans-serif;
+  color:#fff8df;text-shadow:0 1px 2px #17120c;font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+#ciudad-isometrica .parcela-ciudad.seleccionado .estado-parcela.contador-visible .estado-parcela-texto {visibility:visible}
+#menuEdificio .menu-edificio-flotante {
+  top:var(--acciones-top,calc(var(--alto-parcela,120px) + var(--arte-ancho,100px)*.045));
+  gap:calc(var(--arte-ancho,100px)*.045);
+}
+#menuEdificioEstado[hidden] {display:none!important}
+#menuEdificio .bn {bottom:calc(var(--arte-ancho,100px)*.035)}
+#menuEdificioAcciones.rbs {gap:calc(var(--tam-boton,104px)*.20)}
+#menuEdificio #menuEdificioAcciones button.accion-edificio {
+  background:none!important;border:0!important;box-shadow:none!important;
+  border-radius:50%!important;min-height:0;animation:none;
+}
+#menuEdificio .accion-edificio-icono, #barraColocacion button {
+  box-sizing:border-box;width:var(--tam-boton);height:var(--tam-boton);
+  display:grid;place-items:center;border-radius:50%;background:var(--c);
+  border:calc(var(--tam-boton)*.04) solid #c8a76b;
+  box-shadow:inset 0 0 0 calc(var(--tam-boton)*.025) #ffffff30;
+  color:white;filter:none;font:700 calc(var(--tam-boton)*.47)/1 Georgia,serif;
+}
+#menuEdificio .accion-edificio[data-accion="acelerar"] {--c:#9b691b}
+#menuEdificio .accion-edificio:focus-visible,#barraColocacion button:focus-visible {
+  outline:calc(var(--tam-boton)*.03) solid #f4dc9b;outline-offset:2px;border-radius:50%
+}
+#menuEdificio .menu-edificio-estado {font-variant-numeric:tabular-nums;max-width:440px;white-space:normal;line-height:1.2}
+#ciudad-isometrica #barraColocacion {
+  --tam-boton:calc(var(--arte-ancho,100px)*.27);
+  top:calc(var(--arte-abajo,100%) + var(--arte-ancho,100px)*.055);
+  left:50%;gap:calc(var(--tam-boton)*.20);padding:0;border:0;background:none;box-shadow:none;
+}
+#ciudad-isometrica #barraColocacion button {
+  min-width:0;min-height:0;padding:0;margin:0;cursor:pointer;
+}
+#barraColocacionCancelar {--c:#a8412c}
+#barraColocacionConfirmar {--c:#1f9a6a}
+#ciudad-isometrica #barraColocacionConfirmar:disabled {opacity:.45;cursor:not-allowed}
+#ciudad-isometrica #barraColocacion button:active:not(:disabled) {transform:scale(.94)}
+#panelColas .panel-colas-detalle {gap:10px}
+#panelColas .sp {border-radius:10px;gap:16px;padding:12px 16px;background:#18304a;box-shadow:inset 0 0 0 1px #496783}
+#panelColas .sp>u {width:65px;height:65px;border-radius:8px;font-size:32px;background:#284964;box-shadow:none}
+#panelColas .sp b {font-size:28px}
+#panelColas .sp span,#panelColas .sp em {font-size:21px;line-height:1.25}
+#panelColas .btn.us {width:210px;padding:15px 12px;font-size:25px}
+#panelColas .qh {position:sticky;top:0;z-index:2;background:#172c44;border-radius:10px;flex-wrap:wrap}
+#panelColas .qh .qtm {color:#f5d28a;font-weight:700;font-variant-numeric:tabular-nums}
+#panelColas .qi .qb {border-radius:6px;overflow:hidden}
+#panelColas .sp.uso-rapido {border:1px solid #b58a47;background:#332b20}
+.confirmar-aceleracion {
+  width:min(440px,86vw);max-height:85vh;overflow:auto;padding:20px;
+  box-sizing:border-box;background:#122239;color:#f1ead9;
+  border:1px solid #bf9955;border-radius:14px;box-shadow:0 8px 32px #0008;
+  font:16px/1.4 system-ui,sans-serif;text-align:start;
+}
+.confirmar-aceleracion::backdrop {background:#020810b8}
+.confirmar-aceleracion h2 {margin:0 0 10px;color:#f6d590;font:700 22px Georgia,serif}
+.confirmar-aceleracion p {margin:8px 0}
+.confirmar-aceleracion .acel-tiempo {display:block;color:#f9d58a;margin:12px 0}
+.confirmar-aceleracion .acel-consumo {display:grid;gap:6px;padding:12px;border:1px solid #49617c;border-radius:8px;background:#0c1727;font-variant-numeric:tabular-nums}
+.confirmar-aceleracion .acel-confirmar-acciones {display:flex;gap:10px;margin-top:16px}
+.confirmar-aceleracion button {flex:1;min-height:44px;padding:8px 12px;border:1px solid #6a86a0;border-radius:7px;background:#263d56;color:#f8f0df;font:600 15px system-ui,sans-serif}
+.confirmar-aceleracion button:last-child {background:#73531b;border-color:#d1ac62}
+
+#ciudad-isometrica .previsualizacion-edificio {opacity:1}
+#ciudad-isometrica .previsualizacion-edificio > img {opacity:.82}
+#ciudad-isometrica .previsualizacion-edificio > .edificio-suelo {opacity:.82}
