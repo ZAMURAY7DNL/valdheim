@@ -1,6 +1,11 @@
 /visor.html
-  Cache-Control: max-age=0, must-revalidate
+  Cache-Control: no-cache, max-age=0, must-revalidate
 /sw.js
-  Cache-Control: max-age=0, must-revalidate
+  Cache-Control: no-cache, max-age=0, must-revalidate
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+/visor
+  Cache-Control: no-cache, max-age=0, must-revalidate
+/interfaz/*.css
+  Cache-Control: no-cache, max-age=0, must-revalidate

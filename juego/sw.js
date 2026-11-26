@@ -28,14 +28,18 @@ self.addEventListener("fetch", (evento) => {
   if (peticion.method !== "GET") return;
   if (peticion.mode === "navigate") return;
   if (peticion.headers.has("range")) return;
+  // Una revalidacion explicita nunca vuelve a la Cache Storage.
+  if (peticion.cache === "reload" || peticion.cache === "no-store" || peticion.cache === "no-cache") return;
   const url = new URL(peticion.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.endsWith("/sw.js")) return;
+  // HTML, CSS y codigo: la version la decide la URL fisica de la build.
+  // No servir codigo o estilos desde una cache de arte.
+  if (/\.(?:html?|css|js|mjs)$/i.test(url.pathname)) return;
   if (!/\/(arte|audio|assets|heroes|iconos|interfaz)\//.test(url.pathname)) return;
   evento.respondWith((async () => {
     try {
       const cache = await caches.open(CACHE_ACTIVOS);
-      const guardada = await cache.match(peticion, { ignoreSearch: true });
+      const guardada = await cache.match(peticion);
       if (guardada) return guardada;
     } catch {
       // Sin cache disponible: a la red, como siempre.
