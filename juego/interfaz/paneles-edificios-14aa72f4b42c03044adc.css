@@ -1343,3 +1343,20 @@
 #ciudad-isometrica .previsualizacion-edificio {opacity:1}
 #ciudad-isometrica .previsualizacion-edificio > img {opacity:.82}
 #ciudad-isometrica .previsualizacion-edificio > .edificio-suelo {opacity:.82}
+
+/* Sprites 3D: el rectangulo visible, no el lienzo transparente ni la
+   huella logica, manda en toda la interfaz anclada al edificio. */
+#ciudad-isometrica .parcela-ciudad[data-arte-visible] > .parcela-seleccion {
+  position:absolute;inset:auto;left:var(--arte-izquierda);top:var(--arte-arriba);
+  width:var(--arte-ancho);height:var(--arte-alto);padding:0;z-index:3;
+}
+#ciudad-isometrica .parcela-ciudad[data-arte-visible] .parcela-etiqueta {
+  bottom:0;left:50%;max-width:none;white-space:nowrap;
+}
+#ciudad-isometrica .parcela-ciudad[data-arte-visible] > .estado-parcela,
+#ciudad-isometrica .parcela-ciudad[data-arte-visible] > #barraColocacion {
+  left:var(--arte-centro);
+}
+#ciudad-isometrica .parcela-ciudad[data-arte-visible] > #barraColocacion {
+  --tam-boton:var(--tam-boton-visual);
+}
